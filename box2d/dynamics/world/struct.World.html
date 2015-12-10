@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="generator" content="rustdoc">
+    <meta name="description" content="API documentation for the Rust `World` struct in crate `box2d`.">
+    <meta name="keywords" content="rust, rustlang, rust-lang, World">
+
+    <title>box2d::dynamics::world::World - Rust</title>
+
+    <link rel="stylesheet" type="text/css" href="../../../rustdoc.css">
+    <link rel="stylesheet" type="text/css" href="../../../main.css">
+
+    
+    
+</head>
+<body class="rustdoc">
+    <!--[if lte IE 8]>
+    <div class="warning">
+        This old browser is unsupported and will most likely display funky
+        things.
+    </div>
+    <![endif]-->
+
+    
+
+    <nav class="sidebar">
+        
+        <p class='location'><a href='../../index.html'>box2d</a>::<wbr><a href='../index.html'>dynamics</a>::<wbr><a href='index.html'>world</a></p><script>window.sidebarCurrent = {name: 'World', ty: 'struct', relpath: ''};</script><script defer src="sidebar-items.js"></script>
+    </nav>
+
+    <nav class="sub">
+        <form class="search-form js-only">
+            <div class="search-container">
+                <input class="search-input" name="search"
+                       autocomplete="off"
+                       placeholder="Click or press ‘S’ to search, ‘?’ for more options…"
+                       type="search">
+            </div>
+        </form>
+    </nav>
+
+    <section id='main' class="content struct">
+<h1 class='fqn'><span class='in-band'>Struct <a href='../../index.html'>box2d</a>::<wbr><a href='../index.html'>dynamics</a>::<wbr><a href='index.html'>world</a>::<wbr><a class='struct' href=''>World</a></span><span class='out-of-band'><span id='render-detail'>
+            <a id="toggle-all-docs" href="javascript:void(0)" title="collapse all docs">
+                [<span class='inner'>&#x2212;</span>]
+            </a>
+        </span><a id='src-2147' class='srclink' href='../../../src/box2d/dynamics/world.rs.html#23-32' title='goto source code'>[src]</a></span></h1>
+<pre class='rust struct'>pub struct World {
+    // some fields omitted
+}</pre><h2 id='methods'>Methods</h2><h3 class='impl'><code>impl <a class='struct' href='../../../box2d/dynamics/world/struct.World.html' title='box2d::dynamics::world::World'>World</a></code></h3><div class='impl-items'><h4 id='method.new' class='method'><code>fn <a href='#method.new' class='fnname'>new</a>(gravity: &amp;<a class='struct' href='../../../box2d/common/math/struct.Vec2.html' title='box2d::common::math::Vec2'>Vec2</a>) -&gt; <a class='struct' href='../../../box2d/dynamics/world/struct.World.html' title='box2d::dynamics::world::World'>World</a></code></h4>
+<h4 id='method.set_contact_filter' class='method'><code>fn <a href='#method.set_contact_filter' class='fnname'>set_contact_filter</a>(&amp;mut self, filter: <a class='struct' href='https://doc.rust-lang.org/nightly/alloc/boxed/struct.Box.html' title='alloc::boxed::Box'>Box</a>&lt;<a class='trait' href='../../../box2d/dynamics/world/callbacks/trait.ContactFilter.html' title='box2d::dynamics::world::callbacks::ContactFilter'>ContactFilter</a>&gt;)</code></h4>
+<h4 id='method.set_contact_listener' class='method'><code>fn <a href='#method.set_contact_listener' class='fnname'>set_contact_listener</a>(&amp;mut self, listener: <a class='struct' href='https://doc.rust-lang.org/nightly/alloc/boxed/struct.Box.html' title='alloc::boxed::Box'>Box</a>&lt;<a class='trait' href='../../../box2d/dynamics/world/callbacks/trait.ContactListener.html' title='box2d::dynamics::world::callbacks::ContactListener'>ContactListener</a>&gt;)</code></h4>
+<h4 id='method.create_body' class='method'><code>fn <a href='#method.create_body' class='fnname'>create_body</a>(&amp;mut self, def: &amp;<a class='struct' href='../../../box2d/dynamics/body/struct.BodyDef.html' title='box2d::dynamics::body::BodyDef'>BodyDef</a>) -&gt; <a class='type' href='../../../box2d/dynamics/world/type.BodyHandle.html' title='box2d::dynamics::world::BodyHandle'>BodyHandle</a></code></h4>
+<h4 id='method.get_body' class='method'><code>fn <a href='#method.get_body' class='fnname'>get_body</a>(&amp;self, handle: <a class='type' href='../../../box2d/dynamics/world/type.BodyHandle.html' title='box2d::dynamics::world::BodyHandle'>BodyHandle</a>) -&gt; <a class='struct' href='https://doc.rust-lang.org/nightly/core/cell/struct.Ref.html' title='core::cell::Ref'>Ref</a>&lt;<a class='struct' href='../../../box2d/dynamics/body/struct.MetaBody.html' title='box2d::dynamics::body::MetaBody'>MetaBody</a>&gt;</code></h4>
+<h4 id='method.get_body_mut' class='method'><code>fn <a href='#method.get_body_mut' class='fnname'>get_body_mut</a>(&amp;self, handle: <a class='type' href='../../../box2d/dynamics/world/type.BodyHandle.html' title='box2d::dynamics::world::BodyHandle'>BodyHandle</a>) -&gt; <a class='struct' href='https://doc.rust-lang.org/nightly/core/cell/struct.RefMut.html' title='core::cell::RefMut'>RefMut</a>&lt;<a class='struct' href='../../../box2d/dynamics/body/struct.MetaBody.html' title='box2d::dynamics::body::MetaBody'>MetaBody</a>&gt;</code></h4>
+<h4 id='method.destroy_body' class='method'><code>fn <a href='#method.destroy_body' class='fnname'>destroy_body</a>(&amp;mut self, handle: <a class='type' href='../../../box2d/dynamics/world/type.BodyHandle.html' title='box2d::dynamics::world::BodyHandle'>BodyHandle</a>)</code></h4>
+<h4 id='method.create_joint' class='method'><code>fn <a href='#method.create_joint' class='fnname'>create_joint</a>&lt;JD: <a class='trait' href='../../../box2d/dynamics/joints/trait.JointDef.html' title='box2d::dynamics::joints::JointDef'>JointDef</a>&gt;(&amp;mut self, def: &amp;JD) -&gt; <a class='type' href='../../../box2d/dynamics/world/type.JointHandle.html' title='box2d::dynamics::world::JointHandle'>JointHandle</a></code></h4>
+<h4 id='method.get_joint' class='method'><code>fn <a href='#method.get_joint' class='fnname'>get_joint</a>(&amp;self, handle: <a class='type' href='../../../box2d/dynamics/world/type.JointHandle.html' title='box2d::dynamics::world::JointHandle'>JointHandle</a>) -&gt; <a class='struct' href='https://doc.rust-lang.org/nightly/core/cell/struct.Ref.html' title='core::cell::Ref'>Ref</a>&lt;<a class='struct' href='../../../box2d/dynamics/joints/struct.MetaJoint.html' title='box2d::dynamics::joints::MetaJoint'>MetaJoint</a>&gt;</code></h4>
+<h4 id='method.get_joint_mut' class='method'><code>fn <a href='#method.get_joint_mut' class='fnname'>get_joint_mut</a>(&amp;self, handle: <a class='type' href='../../../box2d/dynamics/world/type.JointHandle.html' title='box2d::dynamics::world::JointHandle'>JointHandle</a>) -&gt; <a class='struct' href='https://doc.rust-lang.org/nightly/core/cell/struct.RefMut.html' title='core::cell::RefMut'>RefMut</a>&lt;<a class='struct' href='../../../box2d/dynamics/joints/struct.MetaJoint.html' title='box2d::dynamics::joints::MetaJoint'>MetaJoint</a>&gt;</code></h4>
+<h4 id='method.destroy_joint' class='method'><code>fn <a href='#method.destroy_joint' class='fnname'>destroy_joint</a>(&amp;mut self, handle: <a class='type' href='../../../box2d/dynamics/world/type.JointHandle.html' title='box2d::dynamics::world::JointHandle'>JointHandle</a>)</code></h4>
+<h4 id='method.step' class='method'><code>fn <a href='#method.step' class='fnname'>step</a>(&amp;mut self, time_step: <a class='primitive' href='https://doc.rust-lang.org/nightly/std/primitive.f32.html'>f32</a>, velocity_iterations: <a class='primitive' href='https://doc.rust-lang.org/nightly/std/primitive.i32.html'>i32</a>, position_iterations: <a class='primitive' href='https://doc.rust-lang.org/nightly/std/primitive.i32.html'>i32</a>)</code></h4>
+<h4 id='method.clear_forces' class='method'><code>fn <a href='#method.clear_forces' class='fnname'>clear_forces</a>(&amp;mut self)</code></h4>
+<h4 id='method.draw_debug_data' class='method'><code>fn <a href='#method.draw_debug_data' class='fnname'>draw_debug_data</a>(&amp;mut self, draw: &amp;mut <a class='trait' href='../../../box2d/common/trait.Draw.html' title='box2d::common::Draw'>Draw</a>, flags: <a class='struct' href='../../../box2d/common/struct.DrawFlags.html' title='box2d::common::DrawFlags'>DrawFlags</a>)</code></h4>
+<h4 id='method.query_aabb' class='method'><code>fn <a href='#method.query_aabb' class='fnname'>query_aabb</a>(&amp;self, callback: &amp;mut <a class='trait' href='../../../box2d/dynamics/world/callbacks/trait.QueryCallback.html' title='box2d::dynamics::world::callbacks::QueryCallback'>QueryCallback</a>, aabb: &amp;<a class='struct' href='../../../box2d/collision/struct.AABB.html' title='box2d::collision::AABB'>AABB</a>)</code></h4>
+<h4 id='method.ray_cast' class='method'><code>fn <a href='#method.ray_cast' class='fnname'>ray_cast</a>(&amp;self, callback: &amp;mut <a class='trait' href='../../../box2d/dynamics/world/callbacks/trait.RayCastCallback.html' title='box2d::dynamics::world::callbacks::RayCastCallback'>RayCastCallback</a>, p1: &amp;<a class='struct' href='../../../box2d/common/math/struct.Vec2.html' title='box2d::common::math::Vec2'>Vec2</a>, p2: &amp;<a class='struct' href='../../../box2d/common/math/struct.Vec2.html' title='box2d::common::math::Vec2'>Vec2</a>)</code></h4>
+<h4 id='method.bodies' class='method'><code>fn <a href='#method.bodies' class='fnname'>bodies</a>(&amp;self) -&gt; HandleIter&lt;<a class='struct' href='../../../box2d/dynamics/body/struct.MetaBody.html' title='box2d::dynamics::body::MetaBody'>MetaBody</a>&gt;</code></h4>
+<h4 id='method.joints' class='method'><code>fn <a href='#method.joints' class='fnname'>joints</a>(&amp;mut self) -&gt; HandleIter&lt;<a class='struct' href='../../../box2d/dynamics/joints/struct.MetaJoint.html' title='box2d::dynamics::joints::MetaJoint'>MetaJoint</a>&gt;</code></h4>
+<h4 id='method.contact_list_mut' class='method'><code>fn <a href='#method.contact_list_mut' class='fnname'>contact_list_mut</a>(&amp;mut self) -&gt; <a class='struct' href='../../../box2d/dynamics/world/struct.ContactIterMut.html' title='box2d::dynamics::world::ContactIterMut'>ContactIterMut</a></code></h4>
+<h4 id='method.contact_list' class='method'><code>fn <a href='#method.contact_list' class='fnname'>contact_list</a>(&amp;self) -&gt; <a class='struct' href='../../../box2d/dynamics/world/struct.ContactIter.html' title='box2d::dynamics::world::ContactIter'>ContactIter</a></code></h4>
+<h4 id='method.set_sleeping_allowed' class='method'><code>fn <a href='#method.set_sleeping_allowed' class='fnname'>set_sleeping_allowed</a>(&amp;mut self, flag: <a class='primitive' href='https://doc.rust-lang.org/nightly/std/primitive.bool.html'>bool</a>)</code></h4>
+<h4 id='method.is_sleeping_allowed' class='method'><code>fn <a href='#method.is_sleeping_allowed' class='fnname'>is_sleeping_allowed</a>(&amp;self) -&gt; <a class='primitive' href='https://doc.rust-lang.org/nightly/std/primitive.bool.html'>bool</a></code></h4>
+<h4 id='method.set_warm_starting' class='method'><code>fn <a href='#method.set_warm_starting' class='fnname'>set_warm_starting</a>(&amp;mut self, flag: <a class='primitive' href='https://doc.rust-lang.org/nightly/std/primitive.bool.html'>bool</a>)</code></h4>
+<h4 id='method.is_warm_starting' class='method'><code>fn <a href='#method.is_warm_starting' class='fnname'>is_warm_starting</a>(&amp;self) -&gt; <a class='primitive' href='https://doc.rust-lang.org/nightly/std/primitive.bool.html'>bool</a></code></h4>
+<h4 id='method.set_continuous_physics' class='method'><code>fn <a href='#method.set_continuous_physics' class='fnname'>set_continuous_physics</a>(&amp;mut self, flag: <a class='primitive' href='https://doc.rust-lang.org/nightly/std/primitive.bool.html'>bool</a>)</code></h4>
+<h4 id='method.is_continuous_physics' class='method'><code>fn <a href='#method.is_continuous_physics' class='fnname'>is_continuous_physics</a>(&amp;self) -&gt; <a class='primitive' href='https://doc.rust-lang.org/nightly/std/primitive.bool.html'>bool</a></code></h4>
+<h4 id='method.set_sub_stepping' class='method'><code>fn <a href='#method.set_sub_stepping' class='fnname'>set_sub_stepping</a>(&amp;mut self, flag: <a class='primitive' href='https://doc.rust-lang.org/nightly/std/primitive.bool.html'>bool</a>)</code></h4>
+<h4 id='method.is_sub_stepping' class='method'><code>fn <a href='#method.is_sub_stepping' class='fnname'>is_sub_stepping</a>(&amp;self) -&gt; <a class='primitive' href='https://doc.rust-lang.org/nightly/std/primitive.bool.html'>bool</a></code></h4>
+<h4 id='method.proxy_count' class='method'><code>fn <a href='#method.proxy_count' class='fnname'>proxy_count</a>(&amp;self) -&gt; <a class='primitive' href='https://doc.rust-lang.org/nightly/std/primitive.i32.html'>i32</a></code></h4>
+<h4 id='method.body_count' class='method'><code>fn <a href='#method.body_count' class='fnname'>body_count</a>(&amp;self) -&gt; <a class='primitive' href='https://doc.rust-lang.org/nightly/std/primitive.i32.html'>i32</a></code></h4>
+<h4 id='method.joint_count' class='method'><code>fn <a href='#method.joint_count' class='fnname'>joint_count</a>(&amp;self) -&gt; <a class='primitive' href='https://doc.rust-lang.org/nightly/std/primitive.i32.html'>i32</a></code></h4>
+<h4 id='method.contact_count' class='method'><code>fn <a href='#method.contact_count' class='fnname'>contact_count</a>(&amp;self) -&gt; <a class='primitive' href='https://doc.rust-lang.org/nightly/std/primitive.i32.html'>i32</a></code></h4>
+<h4 id='method.tree_height' class='method'><code>fn <a href='#method.tree_height' class='fnname'>tree_height</a>(&amp;self) -&gt; <a class='primitive' href='https://doc.rust-lang.org/nightly/std/primitive.i32.html'>i32</a></code></h4>
+<h4 id='method.tree_balance' class='method'><code>fn <a href='#method.tree_balance' class='fnname'>tree_balance</a>(&amp;self) -&gt; <a class='primitive' href='https://doc.rust-lang.org/nightly/std/primitive.i32.html'>i32</a></code></h4>
+<h4 id='method.tree_quality' class='method'><code>fn <a href='#method.tree_quality' class='fnname'>tree_quality</a>(&amp;self) -&gt; <a class='primitive' href='https://doc.rust-lang.org/nightly/std/primitive.f32.html'>f32</a></code></h4>
+<h4 id='method.set_gravity' class='method'><code>fn <a href='#method.set_gravity' class='fnname'>set_gravity</a>(&amp;mut self, gravity: &amp;<a class='struct' href='../../../box2d/common/math/struct.Vec2.html' title='box2d::common::math::Vec2'>Vec2</a>)</code></h4>
+<h4 id='method.gravity' class='method'><code>fn <a href='#method.gravity' class='fnname'>gravity</a>(&amp;self) -&gt; <a class='struct' href='../../../box2d/common/math/struct.Vec2.html' title='box2d::common::math::Vec2'>Vec2</a></code></h4>
+<h4 id='method.is_locked' class='method'><code>fn <a href='#method.is_locked' class='fnname'>is_locked</a>(&amp;self) -&gt; <a class='primitive' href='https://doc.rust-lang.org/nightly/std/primitive.bool.html'>bool</a></code></h4>
+<h4 id='method.set_auto_clearing_forces' class='method'><code>fn <a href='#method.set_auto_clearing_forces' class='fnname'>set_auto_clearing_forces</a>(&amp;mut self, flag: <a class='primitive' href='https://doc.rust-lang.org/nightly/std/primitive.bool.html'>bool</a>)</code></h4>
+<h4 id='method.is_auto_clearing_forces' class='method'><code>fn <a href='#method.is_auto_clearing_forces' class='fnname'>is_auto_clearing_forces</a>(&amp;self) -&gt; <a class='primitive' href='https://doc.rust-lang.org/nightly/std/primitive.bool.html'>bool</a></code></h4>
+<h4 id='method.shift_origin' class='method'><code>fn <a href='#method.shift_origin' class='fnname'>shift_origin</a>(&amp;mut self, origin: &amp;<a class='struct' href='../../../box2d/common/math/struct.Vec2.html' title='box2d::common::math::Vec2'>Vec2</a>)</code></h4>
+<h4 id='method.profile' class='method'><code>fn <a href='#method.profile' class='fnname'>profile</a>&lt;'a&gt;(&amp;'a self) -&gt; &amp;'a <a class='struct' href='../../../box2d/dynamics/struct.Profile.html' title='box2d::dynamics::Profile'>Profile</a></code></h4>
+<h4 id='method.dump' class='method'><code>fn <a href='#method.dump' class='fnname'>dump</a>(&amp;mut self)</code></h4>
+</div><h2 id='implementations'>Trait Implementations</h2><h3 class='impl'><code>impl <a class='trait' href='https://doc.rust-lang.org/nightly/core/ops/trait.Drop.html' title='core::ops::Drop'>Drop</a> for <a class='struct' href='../../../box2d/dynamics/world/struct.World.html' title='box2d::dynamics::world::World'>World</a></code></h3><div class='impl-items'><h4 id='method.drop' class='method'><code>fn <a href='https://doc.rust-lang.org/nightly/core/ops/trait.Drop.html#method.drop' class='fnname'>drop</a>(&amp;mut self)</code></h4>
+</div></section>
+    <section id='search' class="content hidden"></section>
+
+    <section class="footer"></section>
+
+    <aside id="help" class="hidden">
+        <div>
+            <h1 class="hidden">Help</h1>
+
+            <div class="shortcuts">
+                <h2>Keyboard Shortcuts</h2>
+
+                <dl>
+                    <dt>?</dt>
+                    <dd>Show this help dialog</dd>
+                    <dt>S</dt>
+                    <dd>Focus the search field</dd>
+                    <dt>&larrb;</dt>
+                    <dd>Move up in search results</dd>
+                    <dt>&rarrb;</dt>
+                    <dd>Move down in search results</dd>
+                    <dt>&#9166;</dt>
+                    <dd>Go to active search result</dd>
+                </dl>
+            </div>
+
+            <div class="infos">
+                <h2>Search Tricks</h2>
+
+                <p>
+                    Prefix searches with a type followed by a colon (e.g.
+                    <code>fn:</code>) to restrict the search to a given type.
+                </p>
+
+                <p>
+                    Accepted types are: <code>fn</code>, <code>mod</code>,
+                    <code>struct</code>, <code>enum</code>,
+                    <code>trait</code>, <code>type</code>, <code>macro</code>,
+                    and <code>const</code>.
+                </p>
+
+                <p>
+                    Search functions by type signature (e.g.
+                    <code>vec -> usize</code>)
+                </p>
+            </div>
+        </div>
+    </aside>
+
+    
+
+    <script>
+        window.rootPath = "../../../";
+        window.currentCrate = "box2d";
+        window.playgroundUrl = "";
+    </script>
+    <script src="../../../jquery.js"></script>
+    <script src="../../../main.js"></script>
+    
+    <script defer src="../../../search-index.js"></script>
+</body>
+</html>

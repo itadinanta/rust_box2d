@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="generator" content="rustdoc">
+    <meta name="description" content="API documentation for the Rust `Contact` struct in crate `box2d`.">
+    <meta name="keywords" content="rust, rustlang, rust-lang, Contact">
+
+    <title>box2d::dynamics::contacts::Contact - Rust</title>
+
+    <link rel="stylesheet" type="text/css" href="../../../rustdoc.css">
+    <link rel="stylesheet" type="text/css" href="../../../main.css">
+
+    
+    
+</head>
+<body class="rustdoc">
+    <!--[if lte IE 8]>
+    <div class="warning">
+        This old browser is unsupported and will most likely display funky
+        things.
+    </div>
+    <![endif]-->
+
+    
+
+    <nav class="sidebar">
+        
+        <p class='location'><a href='../../index.html'>box2d</a>::<wbr><a href='../index.html'>dynamics</a>::<wbr><a href='index.html'>contacts</a></p><script>window.sidebarCurrent = {name: 'Contact', ty: 'struct', relpath: ''};</script><script defer src="sidebar-items.js"></script>
+    </nav>
+
+    <nav class="sub">
+        <form class="search-form js-only">
+            <div class="search-container">
+                <input class="search-input" name="search"
+                       autocomplete="off"
+                       placeholder="Click or press ‘S’ to search, ‘?’ for more options…"
+                       type="search">
+            </div>
+        </form>
+    </nav>
+
+    <section id='main' class="content struct">
+<h1 class='fqn'><span class='in-band'>Struct <a href='../../index.html'>box2d</a>::<wbr><a href='../index.html'>dynamics</a>::<wbr><a href='index.html'>contacts</a>::<wbr><a class='struct' href=''>Contact</a></span><span class='out-of-band'><span id='render-detail'>
+            <a id="toggle-all-docs" href="javascript:void(0)" title="collapse all docs">
+                [<span class='inner'>&#x2212;</span>]
+            </a>
+        </span><a id='src-4692' class='srclink' href='../../../src/box2d/wrap.rs.html#29-31' title='goto source code'>[src]</a></span></h1>
+<pre class='rust struct'>pub struct Contact {
+    // some fields omitted
+}</pre><h2 id='methods'>Methods</h2><h3 class='impl'><code>impl <a class='struct' href='../../../box2d/dynamics/contacts/struct.Contact.html' title='box2d::dynamics::contacts::Contact'>Contact</a></code></h3><div class='impl-items'><h4 id='method.manifold' class='method'><code>fn <a href='#method.manifold' class='fnname'>manifold</a>&lt;'a&gt;(&amp;'a self) -&gt; &amp;'a <a class='struct' href='../../../box2d/collision/struct.Manifold.html' title='box2d::collision::Manifold'>Manifold</a></code></h4>
+<h4 id='method.manifold_mut' class='method'><code>fn <a href='#method.manifold_mut' class='fnname'>manifold_mut</a>&lt;'a&gt;(&amp;'a mut self) -&gt; &amp;'a mut <a class='struct' href='../../../box2d/collision/struct.Manifold.html' title='box2d::collision::Manifold'>Manifold</a></code></h4>
+<h4 id='method.world_manifold' class='method'><code>fn <a href='#method.world_manifold' class='fnname'>world_manifold</a>&lt;'a&gt;(&amp;'a self) -&gt; <a class='struct' href='../../../box2d/collision/struct.WorldManifold.html' title='box2d::collision::WorldManifold'>WorldManifold</a></code></h4>
+<h4 id='method.is_touching' class='method'><code>fn <a href='#method.is_touching' class='fnname'>is_touching</a>(&amp;self) -&gt; <a class='primitive' href='https://doc.rust-lang.org/nightly/std/primitive.bool.html'>bool</a></code></h4>
+<h4 id='method.is_enabled' class='method'><code>fn <a href='#method.is_enabled' class='fnname'>is_enabled</a>(&amp;self) -&gt; <a class='primitive' href='https://doc.rust-lang.org/nightly/std/primitive.bool.html'>bool</a></code></h4>
+<h4 id='method.fixture_a' class='method'><code>fn <a href='#method.fixture_a' class='fnname'>fixture_a</a>(&amp;self) -&gt; <a class='type' href='../../../box2d/dynamics/body/type.FixtureHandle.html' title='box2d::dynamics::body::FixtureHandle'>FixtureHandle</a></code></h4>
+<h4 id='method.child_index_a' class='method'><code>fn <a href='#method.child_index_a' class='fnname'>child_index_a</a>(&amp;self) -&gt; <a class='primitive' href='https://doc.rust-lang.org/nightly/std/primitive.i32.html'>i32</a></code></h4>
+<h4 id='method.fixture_b' class='method'><code>fn <a href='#method.fixture_b' class='fnname'>fixture_b</a>(&amp;self) -&gt; <a class='type' href='../../../box2d/dynamics/body/type.FixtureHandle.html' title='box2d::dynamics::body::FixtureHandle'>FixtureHandle</a></code></h4>
+<h4 id='method.child_index_b' class='method'><code>fn <a href='#method.child_index_b' class='fnname'>child_index_b</a>(&amp;self) -&gt; <a class='primitive' href='https://doc.rust-lang.org/nightly/std/primitive.i32.html'>i32</a></code></h4>
+<h4 id='method.set_friction' class='method'><code>fn <a href='#method.set_friction' class='fnname'>set_friction</a>(&amp;mut self, friction: <a class='primitive' href='https://doc.rust-lang.org/nightly/std/primitive.f32.html'>f32</a>)</code></h4>
+<h4 id='method.friction' class='method'><code>fn <a href='#method.friction' class='fnname'>friction</a>(&amp;self) -&gt; <a class='primitive' href='https://doc.rust-lang.org/nightly/std/primitive.f32.html'>f32</a></code></h4>
+<h4 id='method.reset_friction' class='method'><code>fn <a href='#method.reset_friction' class='fnname'>reset_friction</a>(&amp;mut self)</code></h4>
+<h4 id='method.set_restitution' class='method'><code>fn <a href='#method.set_restitution' class='fnname'>set_restitution</a>(&amp;mut self, restitution: <a class='primitive' href='https://doc.rust-lang.org/nightly/std/primitive.f32.html'>f32</a>)</code></h4>
+<h4 id='method.restitution' class='method'><code>fn <a href='#method.restitution' class='fnname'>restitution</a>(&amp;self) -&gt; <a class='primitive' href='https://doc.rust-lang.org/nightly/std/primitive.f32.html'>f32</a></code></h4>
+<h4 id='method.reset_restitution' class='method'><code>fn <a href='#method.reset_restitution' class='fnname'>reset_restitution</a>(&amp;mut self)</code></h4>
+<h4 id='method.set_tangent_speed' class='method'><code>fn <a href='#method.set_tangent_speed' class='fnname'>set_tangent_speed</a>(&amp;mut self, speed: <a class='primitive' href='https://doc.rust-lang.org/nightly/std/primitive.f32.html'>f32</a>)</code></h4>
+<h4 id='method.tangent_speed' class='method'><code>fn <a href='#method.tangent_speed' class='fnname'>tangent_speed</a>(&amp;self) -&gt; <a class='primitive' href='https://doc.rust-lang.org/nightly/std/primitive.f32.html'>f32</a></code></h4>
+<h4 id='method.evaluate' class='method'><code>fn <a href='#method.evaluate' class='fnname'>evaluate</a>(&amp;mut self, xf_a: &amp;<a class='struct' href='../../../box2d/common/math/struct.Transform.html' title='box2d::common::math::Transform'>Transform</a>, xf_b: &amp;<a class='struct' href='../../../box2d/common/math/struct.Transform.html' title='box2d::common::math::Transform'>Transform</a>) -&gt; <a class='struct' href='../../../box2d/collision/struct.Manifold.html' title='box2d::collision::Manifold'>Manifold</a></code></h4>
+</div></section>
+    <section id='search' class="content hidden"></section>
+
+    <section class="footer"></section>
+
+    <aside id="help" class="hidden">
+        <div>
+            <h1 class="hidden">Help</h1>
+
+            <div class="shortcuts">
+                <h2>Keyboard Shortcuts</h2>
+
+                <dl>
+                    <dt>?</dt>
+                    <dd>Show this help dialog</dd>
+                    <dt>S</dt>
+                    <dd>Focus the search field</dd>
+                    <dt>&larrb;</dt>
+                    <dd>Move up in search results</dd>
+                    <dt>&rarrb;</dt>
+                    <dd>Move down in search results</dd>
+                    <dt>&#9166;</dt>
+                    <dd>Go to active search result</dd>
+                </dl>
+            </div>
+
+            <div class="infos">
+                <h2>Search Tricks</h2>
+
+                <p>
+                    Prefix searches with a type followed by a colon (e.g.
+                    <code>fn:</code>) to restrict the search to a given type.
+                </p>
+
+                <p>
+                    Accepted types are: <code>fn</code>, <code>mod</code>,
+                    <code>struct</code>, <code>enum</code>,
+                    <code>trait</code>, <code>type</code>, <code>macro</code>,
+                    and <code>const</code>.
+                </p>
+
+                <p>
+                    Search functions by type signature (e.g.
+                    <code>vec -> usize</code>)
+                </p>
+            </div>
+        </div>
+    </aside>
+
+    
+
+    <script>
+        window.rootPath = "../../../";
+        window.currentCrate = "box2d";
+        window.playgroundUrl = "";
+    </script>
+    <script src="../../../jquery.js"></script>
+    <script src="../../../main.js"></script>
+    
+    <script defer src="../../../search-index.js"></script>
+</body>
+</html>

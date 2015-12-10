@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="generator" content="rustdoc">
+    <meta name="description" content="API documentation for the Rust `Body` struct in crate `box2d`.">
+    <meta name="keywords" content="rust, rustlang, rust-lang, Body">
+
+    <title>box2d::dynamics::body::Body - Rust</title>
+
+    <link rel="stylesheet" type="text/css" href="../../../rustdoc.css">
+    <link rel="stylesheet" type="text/css" href="../../../main.css">
+
+    
+    
+</head>
+<body class="rustdoc">
+    <!--[if lte IE 8]>
+    <div class="warning">
+        This old browser is unsupported and will most likely display funky
+        things.
+    </div>
+    <![endif]-->
+
+    
+
+    <nav class="sidebar">
+        
+        <p class='location'><a href='../../index.html'>box2d</a>::<wbr><a href='../index.html'>dynamics</a>::<wbr><a href='index.html'>body</a></p><script>window.sidebarCurrent = {name: 'Body', ty: 'struct', relpath: ''};</script><script defer src="sidebar-items.js"></script>
+    </nav>
+
+    <nav class="sub">
+        <form class="search-form js-only">
+            <div class="search-container">
+                <input class="search-input" name="search"
+                       autocomplete="off"
+                       placeholder="Click or press ‘S’ to search, ‘?’ for more options…"
+                       type="search">
+            </div>
+        </form>
+    </nav>
+
+    <section id='main' class="content struct">
+<h1 class='fqn'><span class='in-band'>Struct <a href='../../index.html'>box2d</a>::<wbr><a href='../index.html'>dynamics</a>::<wbr><a href='index.html'>body</a>::<wbr><a class='struct' href=''>Body</a></span><span class='out-of-band'><span id='render-detail'>
+            <a id="toggle-all-docs" href="javascript:void(0)" title="collapse all docs">
+                [<span class='inner'>&#x2212;</span>]
+            </a>
+        </span><a id='src-2554' class='srclink' href='../../../src/box2d/wrap.rs.html#29-31' title='goto source code'>[src]</a></span></h1>
+<pre class='rust struct'>pub struct Body {
+    // some fields omitted
+}</pre><h2 id='methods'>Methods</h2><h3 class='impl'><code>impl <a class='struct' href='../../../box2d/dynamics/body/struct.Body.html' title='box2d::dynamics::body::Body'>Body</a></code></h3><div class='impl-items'><h4 id='method.transform' class='method'><code>fn <a href='#method.transform' class='fnname'>transform</a>&lt;'a&gt;(&amp;'a self) -&gt; &amp;'a <a class='struct' href='../../../box2d/common/math/struct.Transform.html' title='box2d::common::math::Transform'>Transform</a></code></h4>
+<h4 id='method.position' class='method'><code>fn <a href='#method.position' class='fnname'>position</a>&lt;'a&gt;(&amp;'a self) -&gt; &amp;'a <a class='struct' href='../../../box2d/common/math/struct.Vec2.html' title='box2d::common::math::Vec2'>Vec2</a></code></h4>
+<h4 id='method.angle' class='method'><code>fn <a href='#method.angle' class='fnname'>angle</a>(&amp;self) -&gt; <a class='primitive' href='https://doc.rust-lang.org/nightly/std/primitive.f32.html'>f32</a></code></h4>
+<h4 id='method.world_center' class='method'><code>fn <a href='#method.world_center' class='fnname'>world_center</a>&lt;'a&gt;(&amp;'a self) -&gt; &amp;'a <a class='struct' href='../../../box2d/common/math/struct.Vec2.html' title='box2d::common::math::Vec2'>Vec2</a></code></h4>
+<h4 id='method.local_center' class='method'><code>fn <a href='#method.local_center' class='fnname'>local_center</a>&lt;'a&gt;(&amp;'a self) -&gt; &amp;'a <a class='struct' href='../../../box2d/common/math/struct.Vec2.html' title='box2d::common::math::Vec2'>Vec2</a></code></h4>
+<h4 id='method.linear_velocity' class='method'><code>fn <a href='#method.linear_velocity' class='fnname'>linear_velocity</a>&lt;'a&gt;(&amp;'a self) -&gt; &amp;'a <a class='struct' href='../../../box2d/common/math/struct.Vec2.html' title='box2d::common::math::Vec2'>Vec2</a></code></h4>
+<h4 id='method.angular_velocity' class='method'><code>fn <a href='#method.angular_velocity' class='fnname'>angular_velocity</a>(&amp;self) -&gt; <a class='primitive' href='https://doc.rust-lang.org/nightly/std/primitive.f32.html'>f32</a></code></h4>
+<h4 id='method.mass' class='method'><code>fn <a href='#method.mass' class='fnname'>mass</a>(&amp;self) -&gt; <a class='primitive' href='https://doc.rust-lang.org/nightly/std/primitive.f32.html'>f32</a></code></h4>
+<h4 id='method.inertia' class='method'><code>fn <a href='#method.inertia' class='fnname'>inertia</a>(&amp;self) -&gt; <a class='primitive' href='https://doc.rust-lang.org/nightly/std/primitive.f32.html'>f32</a></code></h4>
+<h4 id='method.mass_data' class='method'><code>fn <a href='#method.mass_data' class='fnname'>mass_data</a>(&amp;self) -&gt; <a class='struct' href='../../../box2d/collision/shapes/struct.MassData.html' title='box2d::collision::shapes::MassData'>MassData</a></code></h4>
+<h4 id='method.world_point' class='method'><code>fn <a href='#method.world_point' class='fnname'>world_point</a>(&amp;self, local: &amp;<a class='struct' href='../../../box2d/common/math/struct.Vec2.html' title='box2d::common::math::Vec2'>Vec2</a>) -&gt; <a class='struct' href='../../../box2d/common/math/struct.Vec2.html' title='box2d::common::math::Vec2'>Vec2</a></code></h4>
+<h4 id='method.world_vector' class='method'><code>fn <a href='#method.world_vector' class='fnname'>world_vector</a>(&amp;self, local: &amp;<a class='struct' href='../../../box2d/common/math/struct.Vec2.html' title='box2d::common::math::Vec2'>Vec2</a>) -&gt; <a class='struct' href='../../../box2d/common/math/struct.Vec2.html' title='box2d::common::math::Vec2'>Vec2</a></code></h4>
+<h4 id='method.local_point' class='method'><code>fn <a href='#method.local_point' class='fnname'>local_point</a>(&amp;self, world: &amp;<a class='struct' href='../../../box2d/common/math/struct.Vec2.html' title='box2d::common::math::Vec2'>Vec2</a>) -&gt; <a class='struct' href='../../../box2d/common/math/struct.Vec2.html' title='box2d::common::math::Vec2'>Vec2</a></code></h4>
+<h4 id='method.local_vector' class='method'><code>fn <a href='#method.local_vector' class='fnname'>local_vector</a>(&amp;self, world: &amp;<a class='struct' href='../../../box2d/common/math/struct.Vec2.html' title='box2d::common::math::Vec2'>Vec2</a>) -&gt; <a class='struct' href='../../../box2d/common/math/struct.Vec2.html' title='box2d::common::math::Vec2'>Vec2</a></code></h4>
+<h4 id='method.linear_velocity_from_world_point' class='method'><code>fn <a href='#method.linear_velocity_from_world_point' class='fnname'>linear_velocity_from_world_point</a>(&amp;self, world: &amp;<a class='struct' href='../../../box2d/common/math/struct.Vec2.html' title='box2d::common::math::Vec2'>Vec2</a>) -&gt; <a class='struct' href='../../../box2d/common/math/struct.Vec2.html' title='box2d::common::math::Vec2'>Vec2</a></code></h4>
+<h4 id='method.linear_velocity_from_local_point' class='method'><code>fn <a href='#method.linear_velocity_from_local_point' class='fnname'>linear_velocity_from_local_point</a>(&amp;self, local: &amp;<a class='struct' href='../../../box2d/common/math/struct.Vec2.html' title='box2d::common::math::Vec2'>Vec2</a>) -&gt; <a class='struct' href='../../../box2d/common/math/struct.Vec2.html' title='box2d::common::math::Vec2'>Vec2</a></code></h4>
+<h4 id='method.linear_damping' class='method'><code>fn <a href='#method.linear_damping' class='fnname'>linear_damping</a>(&amp;self) -&gt; <a class='primitive' href='https://doc.rust-lang.org/nightly/std/primitive.f32.html'>f32</a></code></h4>
+<h4 id='method.angular_damping' class='method'><code>fn <a href='#method.angular_damping' class='fnname'>angular_damping</a>(&amp;self) -&gt; <a class='primitive' href='https://doc.rust-lang.org/nightly/std/primitive.f32.html'>f32</a></code></h4>
+<h4 id='method.gravity_scale' class='method'><code>fn <a href='#method.gravity_scale' class='fnname'>gravity_scale</a>(&amp;self) -&gt; <a class='primitive' href='https://doc.rust-lang.org/nightly/std/primitive.f32.html'>f32</a></code></h4>
+<h4 id='method.body_type' class='method'><code>fn <a href='#method.body_type' class='fnname'>body_type</a>(&amp;self) -&gt; <a class='enum' href='../../../box2d/dynamics/body/enum.BodyType.html' title='box2d::dynamics::body::BodyType'>BodyType</a></code></h4>
+<h4 id='method.is_bullet' class='method'><code>fn <a href='#method.is_bullet' class='fnname'>is_bullet</a>(&amp;self) -&gt; <a class='primitive' href='https://doc.rust-lang.org/nightly/std/primitive.bool.html'>bool</a></code></h4>
+<h4 id='method.is_sleeping_allowed' class='method'><code>fn <a href='#method.is_sleeping_allowed' class='fnname'>is_sleeping_allowed</a>(&amp;self) -&gt; <a class='primitive' href='https://doc.rust-lang.org/nightly/std/primitive.bool.html'>bool</a></code></h4>
+<h4 id='method.is_awake' class='method'><code>fn <a href='#method.is_awake' class='fnname'>is_awake</a>(&amp;self) -&gt; <a class='primitive' href='https://doc.rust-lang.org/nightly/std/primitive.bool.html'>bool</a></code></h4>
+<h4 id='method.is_active' class='method'><code>fn <a href='#method.is_active' class='fnname'>is_active</a>(&amp;self) -&gt; <a class='primitive' href='https://doc.rust-lang.org/nightly/std/primitive.bool.html'>bool</a></code></h4>
+<h4 id='method.is_rotation_fixed' class='method'><code>fn <a href='#method.is_rotation_fixed' class='fnname'>is_rotation_fixed</a>(&amp;self) -&gt; <a class='primitive' href='https://doc.rust-lang.org/nightly/std/primitive.bool.html'>bool</a></code></h4>
+<h4 id='method.joints' class='method'><code>fn <a href='#method.joints' class='fnname'>joints</a>&lt;'a&gt;(&amp;'a self) -&gt; <a class='enum' href='https://doc.rust-lang.org/nightly/core/option/enum.Option.html' title='core::option::Option'>Option</a>&lt;&amp;'a <a class='struct' href='../../../box2d/dynamics/joints/struct.JointEdge.html' title='box2d::dynamics::joints::JointEdge'>JointEdge</a>&gt;</code></h4>
+<h4 id='method.joints_mut' class='method'><code>fn <a href='#method.joints_mut' class='fnname'>joints_mut</a>&lt;'a&gt;(&amp;'a mut self) -&gt; <a class='enum' href='https://doc.rust-lang.org/nightly/core/option/enum.Option.html' title='core::option::Option'>Option</a>&lt;&amp;'a mut <a class='struct' href='../../../box2d/dynamics/joints/struct.JointEdge.html' title='box2d::dynamics::joints::JointEdge'>JointEdge</a>&gt;</code></h4>
+<h4 id='method.contacts' class='method'><code>fn <a href='#method.contacts' class='fnname'>contacts</a>&lt;'a&gt;(&amp;'a self) -&gt; <a class='enum' href='https://doc.rust-lang.org/nightly/core/option/enum.Option.html' title='core::option::Option'>Option</a>&lt;&amp;'a <a class='struct' href='../../../box2d/dynamics/contacts/struct.ContactEdge.html' title='box2d::dynamics::contacts::ContactEdge'>ContactEdge</a>&gt;</code></h4>
+<h4 id='method.contacts_mut' class='method'><code>fn <a href='#method.contacts_mut' class='fnname'>contacts_mut</a>&lt;'a&gt;(&amp;'a mut self) -&gt; <a class='enum' href='https://doc.rust-lang.org/nightly/core/option/enum.Option.html' title='core::option::Option'>Option</a>&lt;&amp;'a mut <a class='struct' href='../../../box2d/dynamics/contacts/struct.ContactEdge.html' title='box2d::dynamics::contacts::ContactEdge'>ContactEdge</a>&gt;</code></h4>
+<h4 id='method.set_transform' class='method'><code>fn <a href='#method.set_transform' class='fnname'>set_transform</a>(&amp;mut self, pos: &amp;<a class='struct' href='../../../box2d/common/math/struct.Vec2.html' title='box2d::common::math::Vec2'>Vec2</a>, angle: <a class='primitive' href='https://doc.rust-lang.org/nightly/std/primitive.f32.html'>f32</a>)</code></h4>
+<h4 id='method.set_linear_velocity' class='method'><code>fn <a href='#method.set_linear_velocity' class='fnname'>set_linear_velocity</a>(&amp;mut self, v: &amp;<a class='struct' href='../../../box2d/common/math/struct.Vec2.html' title='box2d::common::math::Vec2'>Vec2</a>)</code></h4>
+<h4 id='method.set_angular_velocity' class='method'><code>fn <a href='#method.set_angular_velocity' class='fnname'>set_angular_velocity</a>(&amp;mut self, v: <a class='primitive' href='https://doc.rust-lang.org/nightly/std/primitive.f32.html'>f32</a>)</code></h4>
+<h4 id='method.apply_force' class='method'><code>fn <a href='#method.apply_force' class='fnname'>apply_force</a>(&amp;mut self, force: &amp;<a class='struct' href='../../../box2d/common/math/struct.Vec2.html' title='box2d::common::math::Vec2'>Vec2</a>, point: &amp;<a class='struct' href='../../../box2d/common/math/struct.Vec2.html' title='box2d::common::math::Vec2'>Vec2</a>, wake: <a class='primitive' href='https://doc.rust-lang.org/nightly/std/primitive.bool.html'>bool</a>)</code></h4>
+<h4 id='method.apply_force_to_center' class='method'><code>fn <a href='#method.apply_force_to_center' class='fnname'>apply_force_to_center</a>(&amp;mut self, force: &amp;<a class='struct' href='../../../box2d/common/math/struct.Vec2.html' title='box2d::common::math::Vec2'>Vec2</a>, wake: <a class='primitive' href='https://doc.rust-lang.org/nightly/std/primitive.bool.html'>bool</a>)</code></h4>
+<h4 id='method.apply_torque' class='method'><code>fn <a href='#method.apply_torque' class='fnname'>apply_torque</a>(&amp;mut self, torque: <a class='primitive' href='https://doc.rust-lang.org/nightly/std/primitive.f32.html'>f32</a>, wake: <a class='primitive' href='https://doc.rust-lang.org/nightly/std/primitive.bool.html'>bool</a>)</code></h4>
+<h4 id='method.apply_linear_impulse' class='method'><code>fn <a href='#method.apply_linear_impulse' class='fnname'>apply_linear_impulse</a>(&amp;mut self, impulse: &amp;<a class='struct' href='../../../box2d/common/math/struct.Vec2.html' title='box2d::common::math::Vec2'>Vec2</a>, point: &amp;<a class='struct' href='../../../box2d/common/math/struct.Vec2.html' title='box2d::common::math::Vec2'>Vec2</a>, wake: <a class='primitive' href='https://doc.rust-lang.org/nightly/std/primitive.bool.html'>bool</a>)</code></h4>
+<h4 id='method.apply_angular_impulse' class='method'><code>fn <a href='#method.apply_angular_impulse' class='fnname'>apply_angular_impulse</a>(&amp;mut self, impulse: <a class='primitive' href='https://doc.rust-lang.org/nightly/std/primitive.f32.html'>f32</a>, wake: <a class='primitive' href='https://doc.rust-lang.org/nightly/std/primitive.bool.html'>bool</a>)</code></h4>
+<h4 id='method.set_mass_data' class='method'><code>fn <a href='#method.set_mass_data' class='fnname'>set_mass_data</a>(&amp;mut self, data: &amp;<a class='struct' href='../../../box2d/collision/shapes/struct.MassData.html' title='box2d::collision::shapes::MassData'>MassData</a>)</code></h4>
+<h4 id='method.reset_mass_data' class='method'><code>fn <a href='#method.reset_mass_data' class='fnname'>reset_mass_data</a>(&amp;mut self)</code></h4>
+<h4 id='method.set_linear_damping' class='method'><code>fn <a href='#method.set_linear_damping' class='fnname'>set_linear_damping</a>(&amp;mut self, damping: <a class='primitive' href='https://doc.rust-lang.org/nightly/std/primitive.f32.html'>f32</a>)</code></h4>
+<h4 id='method.set_angular_damping' class='method'><code>fn <a href='#method.set_angular_damping' class='fnname'>set_angular_damping</a>(&amp;mut self, damping: <a class='primitive' href='https://doc.rust-lang.org/nightly/std/primitive.f32.html'>f32</a>)</code></h4>
+<h4 id='method.set_gravity_scale' class='method'><code>fn <a href='#method.set_gravity_scale' class='fnname'>set_gravity_scale</a>(&amp;mut self, scale: <a class='primitive' href='https://doc.rust-lang.org/nightly/std/primitive.f32.html'>f32</a>)</code></h4>
+<h4 id='method.set_body_type' class='method'><code>fn <a href='#method.set_body_type' class='fnname'>set_body_type</a>(&amp;mut self, typ: <a class='enum' href='../../../box2d/dynamics/body/enum.BodyType.html' title='box2d::dynamics::body::BodyType'>BodyType</a>)</code></h4>
+<h4 id='method.set_bullet' class='method'><code>fn <a href='#method.set_bullet' class='fnname'>set_bullet</a>(&amp;mut self, flag: <a class='primitive' href='https://doc.rust-lang.org/nightly/std/primitive.bool.html'>bool</a>)</code></h4>
+<h4 id='method.set_sleeping_allowed' class='method'><code>fn <a href='#method.set_sleeping_allowed' class='fnname'>set_sleeping_allowed</a>(&amp;mut self, flag: <a class='primitive' href='https://doc.rust-lang.org/nightly/std/primitive.bool.html'>bool</a>)</code></h4>
+<h4 id='method.set_awake' class='method'><code>fn <a href='#method.set_awake' class='fnname'>set_awake</a>(&amp;mut self, flag: <a class='primitive' href='https://doc.rust-lang.org/nightly/std/primitive.bool.html'>bool</a>)</code></h4>
+<h4 id='method.set_active' class='method'><code>fn <a href='#method.set_active' class='fnname'>set_active</a>(&amp;mut self, flag: <a class='primitive' href='https://doc.rust-lang.org/nightly/std/primitive.bool.html'>bool</a>)</code></h4>
+<h4 id='method.set_rotation_fixed' class='method'><code>fn <a href='#method.set_rotation_fixed' class='fnname'>set_rotation_fixed</a>(&amp;mut self, flag: <a class='primitive' href='https://doc.rust-lang.org/nightly/std/primitive.bool.html'>bool</a>)</code></h4>
+<h4 id='method.dump' class='method'><code>fn <a href='#method.dump' class='fnname'>dump</a>(&amp;mut self)</code></h4>
+</div></section>
+    <section id='search' class="content hidden"></section>
+
+    <section class="footer"></section>
+
+    <aside id="help" class="hidden">
+        <div>
+            <h1 class="hidden">Help</h1>
+
+            <div class="shortcuts">
+                <h2>Keyboard Shortcuts</h2>
+
+                <dl>
+                    <dt>?</dt>
+                    <dd>Show this help dialog</dd>
+                    <dt>S</dt>
+                    <dd>Focus the search field</dd>
+                    <dt>&larrb;</dt>
+                    <dd>Move up in search results</dd>
+                    <dt>&rarrb;</dt>
+                    <dd>Move down in search results</dd>
+                    <dt>&#9166;</dt>
+                    <dd>Go to active search result</dd>
+                </dl>
+            </div>
+
+            <div class="infos">
+                <h2>Search Tricks</h2>
+
+                <p>
+                    Prefix searches with a type followed by a colon (e.g.
+                    <code>fn:</code>) to restrict the search to a given type.
+                </p>
+
+                <p>
+                    Accepted types are: <code>fn</code>, <code>mod</code>,
+                    <code>struct</code>, <code>enum</code>,
+                    <code>trait</code>, <code>type</code>, <code>macro</code>,
+                    and <code>const</code>.
+                </p>
+
+                <p>
+                    Search functions by type signature (e.g.
+                    <code>vec -> usize</code>)
+                </p>
+            </div>
+        </div>
+    </aside>
+
+    
+
+    <script>
+        window.rootPath = "../../../";
+        window.currentCrate = "box2d";
+        window.playgroundUrl = "";
+    </script>
+    <script src="../../../jquery.js"></script>
+    <script src="../../../main.js"></script>
+    
+    <script defer src="../../../search-index.js"></script>
+</body>
+</html>

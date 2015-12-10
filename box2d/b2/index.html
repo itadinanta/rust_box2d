@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="generator" content="rustdoc">
+    <meta name="description" content="API documentation for the Rust `b2` mod in crate `box2d`.">
+    <meta name="keywords" content="rust, rustlang, rust-lang, b2">
+
+    <title>box2d::b2 - Rust</title>
+
+    <link rel="stylesheet" type="text/css" href="../../rustdoc.css">
+    <link rel="stylesheet" type="text/css" href="../../main.css">
+
+    
+    
+</head>
+<body class="rustdoc">
+    <!--[if lte IE 8]>
+    <div class="warning">
+        This old browser is unsupported and will most likely display funky
+        things.
+    </div>
+    <![endif]-->
+
+    
+
+    <nav class="sidebar">
+        
+        <p class='location'><a href='../index.html'>box2d</a></p><script>window.sidebarCurrent = {name: 'b2', ty: 'mod', relpath: '../'};</script><script defer src="../sidebar-items.js"></script>
+    </nav>
+
+    <nav class="sub">
+        <form class="search-form js-only">
+            <div class="search-container">
+                <input class="search-input" name="search"
+                       autocomplete="off"
+                       placeholder="Click or press ‘S’ to search, ‘?’ for more options…"
+                       type="search">
+            </div>
+        </form>
+    </nav>
+
+    <section id='main' class="content mod">
+<h1 class='fqn'><span class='in-band'>Module <a href='../index.html'>box2d</a>::<wbr><a class='mod' href=''>b2</a></span><span class='out-of-band'><span id='render-detail'>
+            <a id="toggle-all-docs" href="javascript:void(0)" title="collapse all docs">
+                [<span class='inner'>&#x2212;</span>]
+            </a>
+        </span><a id='src-4913' class='srclink' href='../../src/box2d/lib.rs.html#57-95' title='goto source code'>[src]</a></span></h1>
+<h2 id='reexports' class='section-header'><a href="#reexports">Reexports</a></h2>
+<table><tr><td><code>pub use common::{<a class='struct' href='../../box2d/common/struct.Color.html' title='box2d::common::Color'>Color</a>, <a class='struct' href='../../box2d/common/struct.DrawFlags.html' title='box2d::common::DrawFlags'>DrawFlags</a>, <a class='trait' href='../../box2d/common/trait.Draw.html' title='box2d::common::Draw'>Draw</a>, DRAW_AABB, DRAW_CENTER_OF_MASS, DRAW_JOINT, DRAW_PAIR, DRAW_SHAPE};</code></td></tr><tr><td><code>pub use common::math::{<a class='struct' href='../../box2d/common/math/struct.Rot.html' title='box2d::common::math::Rot'>Rot</a>, <a class='struct' href='../../box2d/common/math/struct.Sweep.html' title='box2d::common::math::Sweep'>Sweep</a>, <a class='struct' href='../../box2d/common/math/struct.Transform.html' title='box2d::common::math::Transform'>Transform</a>, <a class='struct' href='../../box2d/common/math/struct.Vec2.html' title='box2d::common::math::Vec2'>Vec2</a>};</code></td></tr><tr><td><code>pub use common::math::{<a class='fn' href='../../box2d/common/math/fn.cross_vv.html' title='box2d::common::math::cross_vv'>cross_vv</a>, <a class='fn' href='../../box2d/common/math/fn.cross_vs.html' title='box2d::common::math::cross_vs'>cross_vs</a>, <a class='fn' href='../../box2d/common/math/fn.cross_sv.html' title='box2d::common::math::cross_sv'>cross_sv</a>};</code></td></tr><tr><td><code>pub use common::settings::{ANGULAR_SLOP, LINEAR_SLOP, MAX_MANIFOLD_POINTS, MAX_POLYGON_VERTICES, PI, POLYGON_RADIUS};</code></td></tr><tr><td><code>pub use collision::{<a class='struct' href='../../box2d/collision/struct.AABB.html' title='box2d::collision::AABB'>AABB</a>, <a class='struct' href='../../box2d/collision/struct.ContactFeature.html' title='box2d::collision::ContactFeature'>ContactFeature</a>, <a class='struct' href='../../box2d/collision/struct.ContactId.html' title='box2d::collision::ContactId'>ContactId</a>, <a class='struct' href='../../box2d/collision/struct.Manifold.html' title='box2d::collision::Manifold'>Manifold</a>, <a class='struct' href='../../box2d/collision/struct.ManifoldPoint.html' title='box2d::collision::ManifoldPoint'>ManifoldPoint</a>, <a class='struct' href='../../box2d/collision/struct.WorldManifold.html' title='box2d::collision::WorldManifold'>WorldManifold</a>, <a class='struct' href='../../box2d/collision/struct.RayCastInput.html' title='box2d::collision::RayCastInput'>RayCastInput</a>, <a class='struct' href='../../box2d/collision/struct.RayCastOutput.html' title='box2d::collision::RayCastOutput'>RayCastOutput</a>, <a class='enum' href='../../box2d/collision/enum.ContactFeatureType.html' title='box2d::collision::ContactFeatureType'>ContactFeatureType</a>, <a class='enum' href='../../box2d/collision/enum.ManifoldType.html' title='box2d::collision::ManifoldType'>ManifoldType</a>, <a class='enum' href='../../box2d/collision/enum.PointState.html' title='box2d::collision::PointState'>PointState</a>, <a class='fn' href='../../box2d/collision/fn.get_point_states.html' title='box2d::collision::get_point_states'>get_point_states</a>, <a class='fn' href='../../box2d/collision/fn.test_overlap.html' title='box2d::collision::test_overlap'>test_overlap</a>, <a class='mod' href='../../box2d/collision/distance/index.html' title='box2d::collision::distance'>distance</a>, <a class='mod' href='../../box2d/collision/time_of_impact/index.html' title='box2d::collision::time_of_impact'>time_of_impact</a>};</code></td></tr><tr><td><code>pub use collision::shapes::{<a class='struct' href='../../box2d/collision/shapes/struct.MassData.html' title='box2d::collision::shapes::MassData'>MassData</a>, <a class='enum' href='../../box2d/collision/shapes/enum.ShapeType.html' title='box2d::collision::shapes::ShapeType'>ShapeType</a>, <a class='enum' href='../../box2d/collision/shapes/enum.UnknownShape.html' title='box2d::collision::shapes::UnknownShape'>UnknownShape</a>, <a class='trait' href='../../box2d/collision/shapes/trait.Shape.html' title='box2d::collision::shapes::Shape'>Shape</a>, <a class='struct' href='../../box2d/collision/shapes/chain/struct.ChainShape.html' title='box2d::collision::shapes::chain::ChainShape'>ChainShape</a>, <a class='struct' href='../../box2d/collision/shapes/circle/struct.CircleShape.html' title='box2d::collision::shapes::circle::CircleShape'>CircleShape</a>, <a class='struct' href='../../box2d/collision/shapes/edge/struct.EdgeShape.html' title='box2d::collision::shapes::edge::EdgeShape'>EdgeShape</a>, <a class='struct' href='../../box2d/collision/shapes/polygon/struct.PolygonShape.html' title='box2d::collision::shapes::polygon::PolygonShape'>PolygonShape</a>};</code></td></tr><tr><td><code>pub use dynamics::<a class='struct' href='../../box2d/dynamics/struct.Profile.html' title='box2d::dynamics::Profile'>Profile</a>;</code></td></tr><tr><td><code>pub use dynamics::world::{<a class='struct' href='../../box2d/dynamics/world/struct.World.html' title='box2d::dynamics::world::World'>World</a>, <a class='type' href='../../box2d/dynamics/world/type.BodyHandle.html' title='box2d::dynamics::world::BodyHandle'>BodyHandle</a>, <a class='type' href='../../box2d/dynamics/world/type.JointHandle.html' title='box2d::dynamics::world::JointHandle'>JointHandle</a>};</code></td></tr><tr><td><code>pub use dynamics::world::callbacks::{<a class='struct' href='../../box2d/dynamics/world/callbacks/struct.ContactImpulse.html' title='box2d::dynamics::world::callbacks::ContactImpulse'>ContactImpulse</a>, <a class='trait' href='../../box2d/dynamics/world/callbacks/trait.ContactFilter.html' title='box2d::dynamics::world::callbacks::ContactFilter'>ContactFilter</a>, <a class='trait' href='../../box2d/dynamics/world/callbacks/trait.ContactListener.html' title='box2d::dynamics::world::callbacks::ContactListener'>ContactListener</a>, <a class='trait' href='../../box2d/dynamics/world/callbacks/trait.QueryCallback.html' title='box2d::dynamics::world::callbacks::QueryCallback'>QueryCallback</a>, <a class='trait' href='../../box2d/dynamics/world/callbacks/trait.RayCastCallback.html' title='box2d::dynamics::world::callbacks::RayCastCallback'>RayCastCallback</a>};</code></td></tr><tr><td><code>pub use dynamics::body::{<a class='struct' href='../../box2d/dynamics/body/struct.Body.html' title='box2d::dynamics::body::Body'>Body</a>, <a class='struct' href='../../box2d/dynamics/body/struct.BodyDef.html' title='box2d::dynamics::body::BodyDef'>BodyDef</a>, <a class='struct' href='../../box2d/dynamics/body/struct.MetaBody.html' title='box2d::dynamics::body::MetaBody'>MetaBody</a>, <a class='enum' href='../../box2d/dynamics/body/enum.BodyType.html' title='box2d::dynamics::body::BodyType'>BodyType</a>, <a class='type' href='../../box2d/dynamics/body/type.FixtureHandle.html' title='box2d::dynamics::body::FixtureHandle'>FixtureHandle</a>};</code></td></tr><tr><td><code>pub use dynamics::fixture::{<a class='struct' href='../../box2d/dynamics/fixture/struct.Filter.html' title='box2d::dynamics::fixture::Filter'>Filter</a>, <a class='struct' href='../../box2d/dynamics/fixture/struct.Fixture.html' title='box2d::dynamics::fixture::Fixture'>Fixture</a>, <a class='struct' href='../../box2d/dynamics/fixture/struct.FixtureDef.html' title='box2d::dynamics::fixture::FixtureDef'>FixtureDef</a>, <a class='struct' href='../../box2d/dynamics/fixture/struct.MetaFixture.html' title='box2d::dynamics::fixture::MetaFixture'>MetaFixture</a>};</code></td></tr><tr><td><code>pub use dynamics::joints::{<a class='struct' href='../../box2d/dynamics/joints/distance/struct.DistanceJoint.html' title='box2d::dynamics::joints::distance::DistanceJoint'>DistanceJoint</a>, <a class='struct' href='../../box2d/dynamics/joints/distance/struct.DistanceJointDef.html' title='box2d::dynamics::joints::distance::DistanceJointDef'>DistanceJointDef</a>, <a class='struct' href='../../box2d/dynamics/joints/friction/struct.FrictionJoint.html' title='box2d::dynamics::joints::friction::FrictionJoint'>FrictionJoint</a>, <a class='struct' href='../../box2d/dynamics/joints/friction/struct.FrictionJointDef.html' title='box2d::dynamics::joints::friction::FrictionJointDef'>FrictionJointDef</a>, <a class='struct' href='../../box2d/dynamics/joints/gear/struct.GearJoint.html' title='box2d::dynamics::joints::gear::GearJoint'>GearJoint</a>, <a class='struct' href='../../box2d/dynamics/joints/gear/struct.GearJointDef.html' title='box2d::dynamics::joints::gear::GearJointDef'>GearJointDef</a>, <a class='struct' href='../../box2d/dynamics/joints/struct.JointEdge.html' title='box2d::dynamics::joints::JointEdge'>JointEdge</a>, <a class='struct' href='../../box2d/dynamics/joints/struct.MetaJoint.html' title='box2d::dynamics::joints::MetaJoint'>MetaJoint</a>, <a class='struct' href='../../box2d/dynamics/joints/motor/struct.MotorJoint.html' title='box2d::dynamics::joints::motor::MotorJoint'>MotorJoint</a>, <a class='struct' href='../../box2d/dynamics/joints/motor/struct.MotorJointDef.html' title='box2d::dynamics::joints::motor::MotorJointDef'>MotorJointDef</a>, <a class='struct' href='../../box2d/dynamics/joints/mouse/struct.MouseJoint.html' title='box2d::dynamics::joints::mouse::MouseJoint'>MouseJoint</a>, <a class='struct' href='../../box2d/dynamics/joints/mouse/struct.MouseJointDef.html' title='box2d::dynamics::joints::mouse::MouseJointDef'>MouseJointDef</a>, <a class='struct' href='../../box2d/dynamics/joints/prismatic/struct.PrismaticJoint.html' title='box2d::dynamics::joints::prismatic::PrismaticJoint'>PrismaticJoint</a>, <a class='struct' href='../../box2d/dynamics/joints/prismatic/struct.PrismaticJointDef.html' title='box2d::dynamics::joints::prismatic::PrismaticJointDef'>PrismaticJointDef</a>, <a class='struct' href='../../box2d/dynamics/joints/pulley/struct.PulleyJoint.html' title='box2d::dynamics::joints::pulley::PulleyJoint'>PulleyJoint</a>, <a class='struct' href='../../box2d/dynamics/joints/pulley/struct.PulleyJointDef.html' title='box2d::dynamics::joints::pulley::PulleyJointDef'>PulleyJointDef</a>, <a class='struct' href='../../box2d/dynamics/joints/revolute/struct.RevoluteJoint.html' title='box2d::dynamics::joints::revolute::RevoluteJoint'>RevoluteJoint</a>, <a class='struct' href='../../box2d/dynamics/joints/revolute/struct.RevoluteJointDef.html' title='box2d::dynamics::joints::revolute::RevoluteJointDef'>RevoluteJointDef</a>, <a class='struct' href='../../box2d/dynamics/joints/rope/struct.RopeJoint.html' title='box2d::dynamics::joints::rope::RopeJoint'>RopeJoint</a>, <a class='struct' href='../../box2d/dynamics/joints/rope/struct.RopeJointDef.html' title='box2d::dynamics::joints::rope::RopeJointDef'>RopeJointDef</a>, <a class='struct' href='../../box2d/dynamics/joints/weld/struct.WeldJoint.html' title='box2d::dynamics::joints::weld::WeldJoint'>WeldJoint</a>, <a class='struct' href='../../box2d/dynamics/joints/weld/struct.WeldJointDef.html' title='box2d::dynamics::joints::weld::WeldJointDef'>WeldJointDef</a>, <a class='struct' href='../../box2d/dynamics/joints/wheel/struct.WheelJoint.html' title='box2d::dynamics::joints::wheel::WheelJoint'>WheelJoint</a>, <a class='struct' href='../../box2d/dynamics/joints/wheel/struct.WheelJointDef.html' title='box2d::dynamics::joints::wheel::WheelJointDef'>WheelJointDef</a>, <a class='enum' href='../../box2d/dynamics/joints/enum.JointType.html' title='box2d::dynamics::joints::JointType'>JointType</a>, <a class='enum' href='../../box2d/dynamics/joints/enum.LimitState.html' title='box2d::dynamics::joints::LimitState'>LimitState</a>, <a class='enum' href='../../box2d/dynamics/joints/enum.UnknownJoint.html' title='box2d::dynamics::joints::UnknownJoint'>UnknownJoint</a>, <a class='trait' href='../../box2d/dynamics/joints/trait.Joint.html' title='box2d::dynamics::joints::Joint'>Joint</a>, <a class='trait' href='../../box2d/dynamics/joints/trait.JointDef.html' title='box2d::dynamics::joints::JointDef'>JointDef</a>};</code></td></tr></table></section>
+    <section id='search' class="content hidden"></section>
+
+    <section class="footer"></section>
+
+    <aside id="help" class="hidden">
+        <div>
+            <h1 class="hidden">Help</h1>
+
+            <div class="shortcuts">
+                <h2>Keyboard Shortcuts</h2>
+
+                <dl>
+                    <dt>?</dt>
+                    <dd>Show this help dialog</dd>
+                    <dt>S</dt>
+                    <dd>Focus the search field</dd>
+                    <dt>&larrb;</dt>
+                    <dd>Move up in search results</dd>
+                    <dt>&rarrb;</dt>
+                    <dd>Move down in search results</dd>
+                    <dt>&#9166;</dt>
+                    <dd>Go to active search result</dd>
+                </dl>
+            </div>
+
+            <div class="infos">
+                <h2>Search Tricks</h2>
+
+                <p>
+                    Prefix searches with a type followed by a colon (e.g.
+                    <code>fn:</code>) to restrict the search to a given type.
+                </p>
+
+                <p>
+                    Accepted types are: <code>fn</code>, <code>mod</code>,
+                    <code>struct</code>, <code>enum</code>,
+                    <code>trait</code>, <code>type</code>, <code>macro</code>,
+                    and <code>const</code>.
+                </p>
+
+                <p>
+                    Search functions by type signature (e.g.
+                    <code>vec -> usize</code>)
+                </p>
+            </div>
+        </div>
+    </aside>
+
+    
+
+    <script>
+        window.rootPath = "../../";
+        window.currentCrate = "box2d";
+        window.playgroundUrl = "";
+    </script>
+    <script src="../../jquery.js"></script>
+    <script src="../../main.js"></script>
+    
+    <script defer src="../../search-index.js"></script>
+</body>
+</html>

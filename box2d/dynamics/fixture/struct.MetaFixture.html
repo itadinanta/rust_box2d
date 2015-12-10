@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="generator" content="rustdoc">
+    <meta name="description" content="API documentation for the Rust `MetaFixture` struct in crate `box2d`.">
+    <meta name="keywords" content="rust, rustlang, rust-lang, MetaFixture">
+
+    <title>box2d::dynamics::fixture::MetaFixture - Rust</title>
+
+    <link rel="stylesheet" type="text/css" href="../../../rustdoc.css">
+    <link rel="stylesheet" type="text/css" href="../../../main.css">
+
+    
+    
+</head>
+<body class="rustdoc">
+    <!--[if lte IE 8]>
+    <div class="warning">
+        This old browser is unsupported and will most likely display funky
+        things.
+    </div>
+    <![endif]-->
+
+    
+
+    <nav class="sidebar">
+        
+        <p class='location'><a href='../../index.html'>box2d</a>::<wbr><a href='../index.html'>dynamics</a>::<wbr><a href='index.html'>fixture</a></p><script>window.sidebarCurrent = {name: 'MetaFixture', ty: 'struct', relpath: ''};</script><script defer src="sidebar-items.js"></script>
+    </nav>
+
+    <nav class="sub">
+        <form class="search-form js-only">
+            <div class="search-container">
+                <input class="search-input" name="search"
+                       autocomplete="off"
+                       placeholder="Click or press ‘S’ to search, ‘?’ for more options…"
+                       type="search">
+            </div>
+        </form>
+    </nav>
+
+    <section id='main' class="content struct">
+<h1 class='fqn'><span class='in-band'>Struct <a href='../../index.html'>box2d</a>::<wbr><a href='../index.html'>dynamics</a>::<wbr><a href='index.html'>fixture</a>::<wbr><a class='struct' href=''>MetaFixture</a></span><span class='out-of-band'><span id='render-detail'>
+            <a id="toggle-all-docs" href="javascript:void(0)" title="collapse all docs">
+                [<span class='inner'>&#x2212;</span>]
+            </a>
+        </span><a id='src-2905' class='srclink' href='../../../src/box2d/dynamics/fixture.rs.html#58-61' title='goto source code'>[src]</a></span></h1>
+<pre class='rust struct'>pub struct MetaFixture {
+    // some fields omitted
+}</pre><h2 id='deref-methods'>Methods from <a class='trait' href='https://doc.rust-lang.org/nightly/core/ops/trait.Deref.html' title='core::ops::Deref'>Deref</a>&lt;Target=<a class='struct' href='../../../box2d/dynamics/fixture/struct.Fixture.html' title='box2d::dynamics::fixture::Fixture'>Fixture</a>&gt;</h2><div class='impl-items'><h4 id='method.shape_type' class='method'><code>fn <a href='#method.shape_type' class='fnname'>shape_type</a>(&amp;self) -&gt; <a class='enum' href='../../../box2d/collision/shapes/enum.ShapeType.html' title='box2d::collision::shapes::ShapeType'>ShapeType</a></code></h4>
+<h4 id='method.is_sensor' class='method'><code>fn <a href='#method.is_sensor' class='fnname'>is_sensor</a>(&amp;self) -&gt; <a class='primitive' href='https://doc.rust-lang.org/nightly/std/primitive.bool.html'>bool</a></code></h4>
+<h4 id='method.filter_data' class='method'><code>fn <a href='#method.filter_data' class='fnname'>filter_data</a>&lt;'a&gt;(&amp;'a self) -&gt; &amp;'a <a class='struct' href='../../../box2d/dynamics/fixture/struct.Filter.html' title='box2d::dynamics::fixture::Filter'>Filter</a></code></h4>
+<h4 id='method.body' class='method'><code>fn <a href='#method.body' class='fnname'>body</a>(&amp;self) -&gt; <a class='type' href='../../../box2d/dynamics/world/type.BodyHandle.html' title='box2d::dynamics::world::BodyHandle'>BodyHandle</a></code></h4>
+<h4 id='method.test_point' class='method'><code>fn <a href='#method.test_point' class='fnname'>test_point</a>(&amp;self, point: &amp;<a class='struct' href='../../../box2d/common/math/struct.Vec2.html' title='box2d::common::math::Vec2'>Vec2</a>) -&gt; <a class='primitive' href='https://doc.rust-lang.org/nightly/std/primitive.bool.html'>bool</a></code></h4>
+<h4 id='method.ray_cast' class='method'><code>fn <a href='#method.ray_cast' class='fnname'>ray_cast</a>(&amp;self, input: &amp;<a class='struct' href='../../../box2d/collision/struct.RayCastInput.html' title='box2d::collision::RayCastInput'>RayCastInput</a>, child_index: <a class='primitive' href='https://doc.rust-lang.org/nightly/std/primitive.i32.html'>i32</a>) -&gt; <a class='struct' href='../../../box2d/collision/struct.RayCastOutput.html' title='box2d::collision::RayCastOutput'>RayCastOutput</a></code></h4>
+<h4 id='method.mass_data' class='method'><code>fn <a href='#method.mass_data' class='fnname'>mass_data</a>(&amp;self) -&gt; <a class='struct' href='../../../box2d/collision/shapes/struct.MassData.html' title='box2d::collision::shapes::MassData'>MassData</a></code></h4>
+<h4 id='method.density' class='method'><code>fn <a href='#method.density' class='fnname'>density</a>(&amp;self) -&gt; <a class='primitive' href='https://doc.rust-lang.org/nightly/std/primitive.f32.html'>f32</a></code></h4>
+<h4 id='method.friction' class='method'><code>fn <a href='#method.friction' class='fnname'>friction</a>(&amp;self) -&gt; <a class='primitive' href='https://doc.rust-lang.org/nightly/std/primitive.f32.html'>f32</a></code></h4>
+<h4 id='method.restitution' class='method'><code>fn <a href='#method.restitution' class='fnname'>restitution</a>(&amp;self) -&gt; <a class='primitive' href='https://doc.rust-lang.org/nightly/std/primitive.f32.html'>f32</a></code></h4>
+<h4 id='method.aabb' class='method'><code>fn <a href='#method.aabb' class='fnname'>aabb</a>&lt;'a&gt;(&amp;'a self, child_index: <a class='primitive' href='https://doc.rust-lang.org/nightly/std/primitive.i32.html'>i32</a>) -&gt; &amp;'a <a class='struct' href='../../../box2d/collision/struct.AABB.html' title='box2d::collision::AABB'>AABB</a></code></h4>
+<h4 id='method.shape_mut' class='method'><code>fn <a href='#method.shape_mut' class='fnname'>shape_mut</a>&lt;'a&gt;(&amp;'a mut self) -&gt; WrappedRefMut&lt;'a, <a class='enum' href='../../../box2d/collision/shapes/enum.UnknownShape.html' title='box2d::collision::shapes::UnknownShape'>UnknownShape</a>&gt;</code></h4>
+<h4 id='method.shape' class='method'><code>fn <a href='#method.shape' class='fnname'>shape</a>&lt;'a&gt;(&amp;'a self) -&gt; WrappedRef&lt;'a, <a class='enum' href='../../../box2d/collision/shapes/enum.UnknownShape.html' title='box2d::collision::shapes::UnknownShape'>UnknownShape</a>&gt;</code></h4>
+<h4 id='method.set_sensor' class='method'><code>fn <a href='#method.set_sensor' class='fnname'>set_sensor</a>(&amp;mut self, flag: <a class='primitive' href='https://doc.rust-lang.org/nightly/std/primitive.bool.html'>bool</a>)</code></h4>
+<h4 id='method.set_filter_data' class='method'><code>fn <a href='#method.set_filter_data' class='fnname'>set_filter_data</a>(&amp;mut self, filter: &amp;<a class='struct' href='../../../box2d/dynamics/fixture/struct.Filter.html' title='box2d::dynamics::fixture::Filter'>Filter</a>)</code></h4>
+<h4 id='method.refilter' class='method'><code>fn <a href='#method.refilter' class='fnname'>refilter</a>(&amp;mut self)</code></h4>
+<h4 id='method.set_density' class='method'><code>fn <a href='#method.set_density' class='fnname'>set_density</a>(&amp;mut self, density: <a class='primitive' href='https://doc.rust-lang.org/nightly/std/primitive.f32.html'>f32</a>)</code></h4>
+<h4 id='method.set_friction' class='method'><code>fn <a href='#method.set_friction' class='fnname'>set_friction</a>(&amp;mut self, friction: <a class='primitive' href='https://doc.rust-lang.org/nightly/std/primitive.f32.html'>f32</a>)</code></h4>
+<h4 id='method.set_restitution' class='method'><code>fn <a href='#method.set_restitution' class='fnname'>set_restitution</a>(&amp;mut self, restitution: <a class='primitive' href='https://doc.rust-lang.org/nightly/std/primitive.f32.html'>f32</a>)</code></h4>
+<h4 id='method.dump' class='method'><code>fn <a href='#method.dump' class='fnname'>dump</a>(&amp;mut self, child_count: <a class='primitive' href='https://doc.rust-lang.org/nightly/std/primitive.i32.html'>i32</a>)</code></h4>
+</div><h2 id='implementations'>Trait Implementations</h2><h3 class='impl'><code>impl <a class='trait' href='../../../box2d/dynamics/user_data/trait.UserData.html' title='box2d::dynamics::user_data::UserData'>UserData</a> for <a class='struct' href='../../../box2d/dynamics/fixture/struct.MetaFixture.html' title='box2d::dynamics::fixture::MetaFixture'>MetaFixture</a></code></h3><div class='impl-items'><h4 id='method.get_user_data' class='method'><code>fn <a href='../../../box2d/dynamics/user_data/trait.UserData.html#method.get_user_data' class='fnname'>get_user_data</a>(&amp;self) -&gt; &amp;<a class='enum' href='https://doc.rust-lang.org/nightly/core/option/enum.Option.html' title='core::option::Option'>Option</a>&lt;<a class='struct' href='https://doc.rust-lang.org/nightly/alloc/boxed/struct.Box.html' title='alloc::boxed::Box'>Box</a>&lt;<a class='trait' href='https://doc.rust-lang.org/nightly/core/any/trait.Any.html' title='core::any::Any'>Any</a>&gt;&gt;</code></h4>
+<h4 id='method.get_user_data_mut' class='method'><code>fn <a href='../../../box2d/dynamics/user_data/trait.UserData.html#method.get_user_data_mut' class='fnname'>get_user_data_mut</a>(&amp;mut self) -&gt; &amp;mut <a class='enum' href='https://doc.rust-lang.org/nightly/core/option/enum.Option.html' title='core::option::Option'>Option</a>&lt;<a class='struct' href='https://doc.rust-lang.org/nightly/alloc/boxed/struct.Box.html' title='alloc::boxed::Box'>Box</a>&lt;<a class='trait' href='https://doc.rust-lang.org/nightly/core/any/trait.Any.html' title='core::any::Any'>Any</a>&gt;&gt;</code></h4>
+<h4 id='method.set_user_data' class='method'><code>fn <a href='../../../box2d/dynamics/user_data/trait.UserData.html#method.set_user_data' class='fnname'>set_user_data</a>(&amp;mut self, v: <a class='enum' href='https://doc.rust-lang.org/nightly/core/option/enum.Option.html' title='core::option::Option'>Option</a>&lt;<a class='struct' href='https://doc.rust-lang.org/nightly/alloc/boxed/struct.Box.html' title='alloc::boxed::Box'>Box</a>&lt;<a class='trait' href='https://doc.rust-lang.org/nightly/core/any/trait.Any.html' title='core::any::Any'>Any</a>&gt;&gt;)</code></h4>
+</div><h3 class='impl'><code>impl <a class='trait' href='https://doc.rust-lang.org/nightly/core/ops/trait.Deref.html' title='core::ops::Deref'>Deref</a> for <a class='struct' href='../../../box2d/dynamics/fixture/struct.MetaFixture.html' title='box2d::dynamics::fixture::MetaFixture'>MetaFixture</a></code></h3><div class='impl-items'><h4 id='assoc_type.Target' class='type'><code>type Target = <a class='struct' href='../../../box2d/dynamics/fixture/struct.Fixture.html' title='box2d::dynamics::fixture::Fixture'>Fixture</a></code></h4>
+<h4 id='method.deref' class='method'><code>fn <a href='https://doc.rust-lang.org/nightly/core/ops/trait.Deref.html#method.deref' class='fnname'>deref</a>(&amp;self) -&gt; &amp;<a class='struct' href='../../../box2d/dynamics/fixture/struct.Fixture.html' title='box2d::dynamics::fixture::Fixture'>Fixture</a></code></h4>
+</div><h3 class='impl'><code>impl <a class='trait' href='https://doc.rust-lang.org/nightly/core/ops/trait.DerefMut.html' title='core::ops::DerefMut'>DerefMut</a> for <a class='struct' href='../../../box2d/dynamics/fixture/struct.MetaFixture.html' title='box2d::dynamics::fixture::MetaFixture'>MetaFixture</a></code></h3><div class='impl-items'><h4 id='method.deref_mut' class='method'><code>fn <a href='https://doc.rust-lang.org/nightly/core/ops/trait.DerefMut.html#method.deref_mut' class='fnname'>deref_mut</a>(&amp;mut self) -&gt; &amp;mut <a class='struct' href='../../../box2d/dynamics/fixture/struct.Fixture.html' title='box2d::dynamics::fixture::Fixture'>Fixture</a></code></h4>
+</div></section>
+    <section id='search' class="content hidden"></section>
+
+    <section class="footer"></section>
+
+    <aside id="help" class="hidden">
+        <div>
+            <h1 class="hidden">Help</h1>
+
+            <div class="shortcuts">
+                <h2>Keyboard Shortcuts</h2>
+
+                <dl>
+                    <dt>?</dt>
+                    <dd>Show this help dialog</dd>
+                    <dt>S</dt>
+                    <dd>Focus the search field</dd>
+                    <dt>&larrb;</dt>
+                    <dd>Move up in search results</dd>
+                    <dt>&rarrb;</dt>
+                    <dd>Move down in search results</dd>
+                    <dt>&#9166;</dt>
+                    <dd>Go to active search result</dd>
+                </dl>
+            </div>
+
+            <div class="infos">
+                <h2>Search Tricks</h2>
+
+                <p>
+                    Prefix searches with a type followed by a colon (e.g.
+                    <code>fn:</code>) to restrict the search to a given type.
+                </p>
+
+                <p>
+                    Accepted types are: <code>fn</code>, <code>mod</code>,
+                    <code>struct</code>, <code>enum</code>,
+                    <code>trait</code>, <code>type</code>, <code>macro</code>,
+                    and <code>const</code>.
+                </p>
+
+                <p>
+                    Search functions by type signature (e.g.
+                    <code>vec -> usize</code>)
+                </p>
+            </div>
+        </div>
+    </aside>
+
+    
+
+    <script>
+        window.rootPath = "../../../";
+        window.currentCrate = "box2d";
+        window.playgroundUrl = "";
+    </script>
+    <script src="../../../jquery.js"></script>
+    <script src="../../../main.js"></script>
+    
+    <script defer src="../../../search-index.js"></script>
+</body>
+</html>
