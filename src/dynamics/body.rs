@@ -1,20 +1,21 @@
 use std::mem;
 use std::ptr;
-use std::any::Any;
 use std::ops::{Deref, DerefMut};
 use std::cell::{Ref, RefMut};
+use std::marker::PhantomData;
 use wrap::*;
 use handle::*;
 use common::math::{Vec2, Transform};
 use collision::shapes::{MassData, Shape};
-use dynamics::world::BodyHandle;
+use dynamics::world::{BodyHandle, JointHandle};
 use dynamics::joints::JointEdge;
-use dynamics::fixture::{MetaFixture, FixtureDef};
-use dynamics::contacts::ContactEdge;
-use dynamics::user_data::{UserData, InternalUserData, RawUserDataMut};
+use dynamics::fixture::{Fixture, MetaFixture, FixtureDef};
+use dynamics::contacts::{ContactEdge, Contact};
+use user_data::{UserDataTypes, UserData, InternalUserData, RawUserData, RawUserDataMut};
 
 #[repr(C)]
 #[derive(Clone, Copy, PartialEq, Debug)]
+#[cfg_attr(feature = "serialize", derive(Serialize, Deserialize))]
 pub enum BodyType {
     Static = 0,
     Kinematic = 1,
@@ -62,78 +63,114 @@ impl BodyDef {
     }
 }
 
-pub type FixtureHandle = TypedHandle<MetaFixture>;
+pub type FixtureHandle = TypedHandle<Fixture>;
 
-pub struct MetaBody {
+pub struct MetaBody<U: UserDataTypes> {
     body: Body,
-    fixtures: HandleMap<MetaFixture>,
-    user_data: Box<InternalUserData<MetaBody>>,
+    fixtures: HandleMap<MetaFixture<U>, Fixture>,
+    user_data: Box<InternalUserData<Body, U::BodyData>>,
 }
 
-impl MetaBody {
+impl<U: UserDataTypes> MetaBody<U> {
     #[doc(hidden)]
-    pub unsafe fn new(ptr: *mut ffi::Body, handle: BodyHandle) -> MetaBody {
+    pub unsafe fn new(ptr: *mut ffi::Body, handle: BodyHandle, custom: U::BodyData) -> Self {
         let mut b = MetaBody {
             body: Body::from_ffi(ptr),
             fixtures: HandleMap::new(),
             user_data: Box::new(InternalUserData {
                 handle: handle,
-                custom: None,
+                custom: custom,
             }),
         };
         b.mut_ptr().set_internal_user_data(&mut *b.user_data);
         b
     }
 
-    pub fn create_fixture(&mut self, shape: &Shape, def: &mut FixtureDef) -> FixtureHandle {
+    pub fn create_fixture(&mut self, shape: &Shape, def: &mut FixtureDef) -> FixtureHandle
+        where U::FixtureData: Default
+    {
+        self.create_fixture_with(shape, def, U::FixtureData::default())
+    }
+
+    pub fn create_fixture_with(&mut self,
+                               shape: &Shape,
+                               def: &mut FixtureDef,
+                               data: U::FixtureData)
+                               -> FixtureHandle {
         unsafe {
             def.shape = shape.base_ptr();
             let fixture = ffi::Body_create_fixture(self.mut_ptr(), def);
-            self.fixtures.insert_with(|h| MetaFixture::new(fixture, h))
+            self.fixtures.insert_with(|h| MetaFixture::new(fixture, h, data))
         }
     }
 
-    pub fn create_fast_fixture(&mut self, shape: &Shape, density: f32) -> FixtureHandle {
+    pub fn create_fast_fixture(&mut self, shape: &Shape, density: f32) -> FixtureHandle
+        where U::FixtureData: Default
+    {
+        self.create_fast_fixture_with(shape, density, U::FixtureData::default())
+    }
+
+    pub fn create_fast_fixture_with(&mut self,
+                                    shape: &Shape,
+                                    density: f32,
+                                    data: U::FixtureData)
+                                    -> FixtureHandle {
         unsafe {
             let fixture = ffi::Body_create_fast_fixture(self.mut_ptr(), shape.base_ptr(), density);
-            self.fixtures.insert_with(|h| MetaFixture::new(fixture, h))
+            self.fixtures.insert_with(|h| MetaFixture::new(fixture, h, data))
         }
     }
 
-    pub fn get_fixture(&self, handle: FixtureHandle) -> Ref<MetaFixture> {
+    pub fn fixture(&self, handle: FixtureHandle) -> Ref<MetaFixture<U>> {
         self.fixtures.get(handle).expect("invalid fixture handle")
     }
 
-    pub fn get_fixture_mut(&self, handle: FixtureHandle) -> RefMut<MetaFixture> {
+    pub fn fixture_mut(&self, handle: FixtureHandle) -> RefMut<MetaFixture<U>> {
         self.fixtures.get_mut(handle).expect("invalid fixture handle")
     }
 
     pub fn destroy_fixture(&mut self, handle: FixtureHandle) {
-        self.fixtures
-            .remove(handle)
-            .map(|mut meta_fixture| {
-                unsafe {
-                    ffi::Body_destroy_fixture(self.mut_ptr(), meta_fixture.mut_ptr());
-                }
-            });
+        let mut fixture = self.fixtures.remove(handle);
+        unsafe {
+            ffi::Body_destroy_fixture(self.mut_ptr(), fixture.mut_ptr());
+        }
     }
 
-    pub fn fixtures(&self) -> HandleIter<MetaFixture> {
+    pub fn fixtures(&self) -> HandleIter<Fixture, MetaFixture<U>> {
         self.fixtures.iter()
+    }
+
+    /// This method is here because contacts are owned by the world and not by the body,
+    /// and having a reference to a `MetaBody` requires having a reference to the world.
+    pub fn contacts(&self) -> ContactIter {
+        ContactIter {
+            edge: unsafe { ffi::Body_get_contact_list_const(self.ptr()) },
+            phantom: PhantomData,
+        }
+    }
+
+    /// This method is here because contacts are owned by the world and not by the body,
+    /// however having a mutable reference to a MetaBody only requires having an immutable reference to the World,
+    /// that's why this method is unsafe.
+    pub unsafe fn contacts_mut(&mut self) -> ContactIterMut {
+        ContactIterMut {
+            edge: ffi::Body_get_contact_list(self.mut_ptr()),
+            phantom: PhantomData,
+        }
     }
 }
 
-impl UserData for MetaBody {
-    fn get_user_data(&self) -> &Option<Box<Any>> {
+impl<U: UserDataTypes> UserData<U::BodyData> for MetaBody<U> {
+    fn user_data(&self) -> &U::BodyData {
         &self.user_data.custom
     }
 
-    fn get_user_data_mut(&mut self) -> &mut Option<Box<Any>> {
+    fn user_data_mut(&mut self) -> &mut U::BodyData {
         &mut self.user_data.custom
     }
 }
 
-impl Deref for MetaBody {
+impl<U: UserDataTypes> Deref for MetaBody<U> {
     type Target = Body;
 
     fn deref(&self) -> &Body {
@@ -141,7 +178,7 @@ impl Deref for MetaBody {
     }
 }
 
-impl DerefMut for MetaBody {
+impl<U: UserDataTypes> DerefMut for MetaBody<U> {
     fn deref_mut(&mut self) -> &mut Body {
         &mut self.body
     }
@@ -150,6 +187,10 @@ impl DerefMut for MetaBody {
 wrap! { ffi::Body => pub Body }
 
 impl Body {
+    pub fn handle(&self) -> BodyHandle {
+        unsafe { self.ptr().handle() }
+    }
+    
     pub fn transform<'a>(&'a self) -> &'a Transform {
         unsafe {
             &*ffi::Body_get_transform(self.ptr()) // Comes from a C++ &
@@ -264,20 +305,11 @@ impl Body {
         unsafe { ffi::Body_is_fixed_rotation(self.ptr()) }
     }
 
-    pub fn joints<'a>(&'a self) -> Option<&'a JointEdge> {
-        unsafe { ffi::Body_get_joint_list_const(self.ptr()).as_ref() }
-    }
-
-    pub fn joints_mut<'a>(&'a mut self) -> Option<&'a mut JointEdge> {
-        unsafe { ffi::Body_get_joint_list(self.mut_ptr()).as_mut() }
-    }
-
-    pub fn contacts<'a>(&'a self) -> Option<&'a ContactEdge> {
-        unsafe { ffi::Body_get_contact_list_const(self.ptr()).as_ref() }
-    }
-
-    pub fn contacts_mut<'a>(&'a mut self) -> Option<&'a mut ContactEdge> {
-        unsafe { ffi::Body_get_contact_list(self.mut_ptr()).as_mut() }
+    pub fn joints(&self) -> JointIter {
+        JointIter {
+            edge: unsafe { ffi::Body_get_joint_list_const(self.ptr()) },
+            phantom: PhantomData,
+        }
     }
 
     pub fn set_transform(&mut self, pos: &Vec2, angle: f32) {
@@ -358,6 +390,69 @@ impl Body {
 
     pub fn dump(&mut self) {
         unsafe { ffi::Body_dump(self.mut_ptr()) }
+    }
+}
+
+pub struct JointIter<'a> {
+    edge: *const JointEdge,
+    phantom: PhantomData<&'a ()>,
+}
+
+impl<'a> Iterator for JointIter<'a> {
+    type Item = (BodyHandle, JointHandle);
+    
+    fn next(&mut self) -> Option<Self::Item> {
+        use user_data::RawUserData;
+        
+        unsafe { match self.edge.as_ref() {
+            None => None,
+            Some(edge) => {
+                self.edge = edge.next;
+                Some((edge.other.handle(), edge.joint.handle()))
+            }
+        } }
+    }
+}
+
+pub struct ContactIter<'a> {
+    edge: *const ContactEdge,
+    phantom: PhantomData<&'a ()>,
+}
+
+impl<'a> Iterator for ContactIter<'a> {
+    type Item = (BodyHandle, WrappedRef<'a, Contact>);
+    
+    fn next(&mut self) -> Option<Self::Item> {
+        use user_data::RawUserData;
+        
+        unsafe { match self.edge.as_ref() {
+            None => None,
+            Some(edge) => {
+                self.edge = edge.next;
+                Some((edge.other.handle(), WrappedRef::new(Contact::from_ffi(edge.contact))))
+            }
+        } }
+    }
+}
+
+pub struct ContactIterMut<'a> {
+    edge: *mut ContactEdge,
+    phantom: PhantomData<&'a ()>,
+}
+
+impl<'a> Iterator for ContactIterMut<'a> {
+    type Item = (BodyHandle, WrappedRefMut<'a, Contact>);
+    
+    fn next(&mut self) -> Option<Self::Item> {
+        use user_data::RawUserData;
+        
+        unsafe { match self.edge.as_mut() {
+            None => None,
+            Some(ref mut edge) => {
+                self.edge = edge.next;
+                Some((edge.other.handle(), WrappedRefMut::new(Contact::from_ffi(edge.contact))))
+            }
+        } }
     }
 }
 

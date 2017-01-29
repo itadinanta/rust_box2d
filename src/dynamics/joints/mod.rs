@@ -42,11 +42,10 @@ pub use self::wheel::{WheelJoint, WheelJointDef};
 
 
 use std::ops::{Deref, DerefMut};
-use std::any::Any;
 use wrap::*;
 use common::math::Vec2;
 use dynamics::world::{World, BodyHandle, JointHandle};
-use dynamics::user_data::{UserData, RawUserData, RawUserDataMut, InternalUserData};
+use user_data::{UserDataTypes, UserData, RawUserData, RawUserDataMut, InternalUserData};
 
 #[repr(C)]
 #[derive(Copy, Clone, PartialEq, Debug)]
@@ -78,22 +77,22 @@ pub trait JointDef {
     fn joint_type() -> JointType where Self: Sized;
 
     #[doc(hidden)]
-    unsafe fn create(&self, world: &mut World) -> *mut ffi::Joint;
+    unsafe fn create<U: UserDataTypes>(&self, world: &mut World<U>) -> *mut ffi::Joint;
 }
 
-pub struct MetaJoint {
+pub struct MetaJoint<U: UserDataTypes> {
     joint: UnknownJoint,
-    user_data: Box<InternalUserData<MetaJoint>>,
+    user_data: Box<InternalUserData<Joint, U::JointData>>,
 }
 
-impl MetaJoint {
+impl<U: UserDataTypes> MetaJoint<U> {
     #[doc(hidden)]
-    pub unsafe fn new(ptr: *mut ffi::Joint, handle: JointHandle) -> MetaJoint {
+    pub unsafe fn new(ptr: *mut ffi::Joint, handle: JointHandle, custom: U::JointData) -> Self {
         let mut j = MetaJoint {
             joint: UnknownJoint::from_ffi(ptr),
             user_data: Box::new(InternalUserData {
                 handle: handle,
-                custom: None,
+                custom: custom,
             }),
         };
         j.mut_base_ptr().set_internal_user_data(&mut *j.user_data);
@@ -101,17 +100,17 @@ impl MetaJoint {
     }
 }
 
-impl UserData for MetaJoint {
-    fn get_user_data(&self) -> &Option<Box<Any>> {
+impl<U: UserDataTypes> UserData<U::JointData> for MetaJoint<U> {
+    fn user_data(&self) -> &U::JointData {
         &self.user_data.custom
     }
 
-    fn get_user_data_mut(&mut self) -> &mut Option<Box<Any>> {
+    fn user_data_mut(&mut self) -> &mut U::JointData {
         &mut self.user_data.custom
     }
 }
 
-impl Deref for MetaJoint {
+impl<U: UserDataTypes> Deref for MetaJoint<U> {
     type Target = UnknownJoint;
 
     fn deref(&self) -> &UnknownJoint {
@@ -119,17 +118,31 @@ impl Deref for MetaJoint {
     }
 }
 
-impl DerefMut for MetaJoint {
+impl<U: UserDataTypes> DerefMut for MetaJoint<U> {
     fn deref_mut(&mut self) -> &mut UnknownJoint {
         &mut self.joint
     }
 }
 
 pub trait Joint: WrappedBase<ffi::Joint> + FromFFI<ffi::Joint> {
+    fn handle(&self) -> JointHandle {
+        unsafe { self.base_ptr().handle() }
+    }
+    
     fn assumed_type() -> JointType where Self: Sized;
 
     fn get_type(&self) -> JointType {
         unsafe { ffi::Joint_get_type(self.base_ptr()) }
+    }
+
+    fn body_a(&self) -> BodyHandle {
+        // we don't need &mut self because nothing is actually mutated here
+        unsafe { ffi::Joint_get_body_a(self.base_ptr() as *mut _).handle() }
+    }
+
+    fn body_b(&self) -> BodyHandle {
+        // we don't need &mut self because nothing is actually mutated here
+        unsafe { ffi::Joint_get_body_b(self.base_ptr() as *mut _).handle() }
     }
 
     fn anchor_a(&self) -> Vec2 {
@@ -152,12 +165,8 @@ pub trait Joint: WrappedBase<ffi::Joint> + FromFFI<ffi::Joint> {
         unsafe { ffi::Joint_is_active(self.base_ptr()) }
     }
 
-    fn body_a(&mut self) -> BodyHandle {
-        unsafe { ffi::Joint_get_body_a(self.mut_base_ptr()).get_handle() }
-    }
-
-    fn body_b(&mut self) -> BodyHandle {
-        unsafe { ffi::Joint_get_body_b(self.mut_base_ptr()).get_handle() }
+    fn is_collide_connected(&self) -> bool {
+        unsafe { ffi::Joint_get_collide_connected(self.base_ptr()) }
     }
 
     fn dump(&mut self) {
@@ -170,37 +179,12 @@ pub trait Joint: WrappedBase<ffi::Joint> + FromFFI<ffi::Joint> {
 }
 
 #[repr(C)]
+#[doc(hidden)]
 pub struct JointEdge {
-    other: *mut ffi::Body,
-    joint: *mut ffi::Joint,
-    prev: *mut JointEdge,
-    next: *mut JointEdge,
-}
-
-impl JointEdge {
-    pub fn other(&self) -> BodyHandle {
-        unsafe { self.other.get_handle() }
-    }
-
-    pub fn joint(&self) -> JointHandle {
-        unsafe { self.joint.get_handle() }
-    }
-
-    pub fn prev_mut(&mut self) -> Option<&mut JointEdge> {
-        unsafe { self.prev.as_mut() }
-    }
-
-    pub fn prev(&self) -> Option<&JointEdge> {
-        unsafe { self.prev.as_ref() }
-    }
-
-    pub fn next_mut(&mut self) -> Option<&mut JointEdge> {
-        unsafe { self.next.as_mut() }
-    }
-
-    pub fn next(&self) -> Option<&JointEdge> {
-        unsafe { self.next.as_ref() }
-    }
+    pub other: *mut ffi::Body,
+    pub joint: *mut ffi::Joint,
+    pub prev: *mut JointEdge,
+    pub next: *mut JointEdge,
 }
 
 pub enum UnknownJoint {
@@ -305,6 +289,7 @@ pub mod ffi {
         // pub fn Joint_get_next(slf: *mut Joint) -> *mut Joint;
         // pub fn Joint_get_next_const(slf: *const Joint) -> *const Joint;
         pub fn Joint_is_active(slf: *const Joint) -> bool;
+        pub fn Joint_get_collide_connected(slf: *const Joint) -> bool;
         pub fn Joint_dump_virtual(slf: *mut Joint);
         pub fn Joint_shift_origin_virtual(slf: *mut Joint, origin: *const Vec2);
     }

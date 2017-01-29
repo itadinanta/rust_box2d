@@ -1,5 +1,6 @@
 use wrap::*;
 use common::math::Vec2;
+use user_data::UserDataTypes;
 use dynamics::world::{World, BodyHandle};
 use dynamics::joints::{Joint, JointType, JointDef};
 
@@ -38,16 +39,16 @@ impl PrismaticJointDef {
         }
     }
 
-    pub fn init(&mut self,
-                world: &World,
-                body_a: BodyHandle,
-                body_b: BodyHandle,
-                anchor: &Vec2,
-                axis: &Vec2) {
+    pub fn init<U: UserDataTypes>(&mut self,
+                                  world: &World<U>,
+                                  body_a: BodyHandle,
+                                  body_b: BodyHandle,
+                                  anchor: &Vec2,
+                                  axis: &Vec2) {
         self.body_a = body_a;
         self.body_b = body_b;
-        let a = world.get_body(body_a);
-        let b = world.get_body(body_a);
+        let a = world.body(body_a);
+        let b = world.body(body_b);
         self.local_anchor_a = a.local_point(anchor);
         self.local_anchor_b = b.local_point(anchor);
         self.local_axis_a = a.local_vector(axis);
@@ -62,10 +63,10 @@ impl JointDef for PrismaticJointDef {
         JointType::Prismatic
     }
 
-    unsafe fn create(&self, world: &mut World) -> *mut ffi::Joint {
+    unsafe fn create<U: UserDataTypes>(&self, world: &mut World<U>) -> *mut ffi::Joint {
         ffi::World_create_prismatic_joint(world.mut_ptr(),
-                                          world.get_body_mut(self.body_a).mut_ptr(),
-                                          world.get_body_mut(self.body_b).mut_ptr(),
+                                          world.body_mut(self.body_a).mut_ptr(),
+                                          world.body_mut(self.body_b).mut_ptr(),
                                           self.collide_connected,
                                           self.local_anchor_a,
                                           self.local_anchor_b,

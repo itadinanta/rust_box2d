@@ -4,55 +4,58 @@ extern crate testbed;
 
 use piston::input::{ Input, Button, Key };
 use wrapped2d::b2;
+use wrapped2d::user_data::NoUserData;
+
+type World = b2::World<NoUserData>;
 
 fn main() {
-    let mut world = b2::World::new(&b2::Vec2 { x: 0., y: 0. });
+    let mut world = World::new(&b2::Vec2 { x: 0., y: 0. });
 
     let ground = create_ground(&mut world);
     let body = create_body(&mut world);
     create_cubes(&mut world, ground);
 
-    let camera = testbed::Camera {
-        position: [0., 0.],
-        size: [40., 40.]
+    let process_input = |input, data: &mut testbed::Data<NoUserData>| {
+        match input {
+            Input::Press(Button::Keyboard(Key::Z)) => {
+                let mut body = data.world.body_mut(body);
+                let f = body.world_vector(&b2::Vec2 { x: 0., y: -200. });
+                let p = body.world_point(&b2::Vec2 { x: 0., y: 2. });
+                body.apply_force(&f, &p, true);
+            },
+            Input::Press(Button::Keyboard(Key::Q)) => {
+                data.world.body_mut(body).apply_torque(50., true);
+            },
+            Input::Press(Button::Keyboard(Key::D)) => {
+                data.world.body_mut(body).apply_torque(-50., true);
+            },
+            _ => ()
+        }
     };
 
-    let draw_flags = b2::DRAW_SHAPE |
-                     b2::DRAW_JOINT |
-                     b2::DRAW_PAIR |
-                     b2::DRAW_CENTER_OF_MASS;
+    let data = testbed::Data {
+        world: world,
+        camera: testbed::Camera {
+            position: [0., 0.],
+            size: [40., 40.]
+        },
+        draw_flags: b2::DRAW_SHAPE |
+                    b2::DRAW_JOINT |
+                    b2::DRAW_PAIR |
+                    b2::DRAW_CENTER_OF_MASS
+    };
 
-    testbed::run(
-        "Apply Force", 400, 400,
-        world, camera, draw_flags,
-        |world, _, input| {
-            match input {
-                Input::Press(Button::Keyboard(Key::Z)) => {
-                    let mut body = world.get_body_mut(body);
-                    let f = body.world_vector(&b2::Vec2 { x: 0., y: -200. });
-                    let p = body.world_point(&b2::Vec2 { x: 0., y: 2. });
-                    body.apply_force(&f, &p, true);
-                },
-                Input::Press(Button::Keyboard(Key::Q)) => {
-                    world.get_body_mut(body)
-                        .apply_torque(50., true);
-                },
-                Input::Press(Button::Keyboard(Key::D)) => {
-                    world.get_body_mut(body)
-                        .apply_torque(-50., true);
-                },
-                _ => ()
-            }
-        }
-    );
+    testbed::run(process_input, data, "Apply Force", 400, 400);
 }
 
-fn create_ground(world: &mut b2::World) -> b2::BodyHandle {
-    let mut def = b2::BodyDef::new();
-    def.position = b2::Vec2 { x: 0., y: 0. };
+fn create_ground(world: &mut World) -> b2::BodyHandle {
+    let def = b2::BodyDef {
+        position: b2::Vec2 { x: 0., y: 0. },
+        .. b2::BodyDef::new()
+    };
 
     let handle = world.create_body(&def);
-    let mut ground = world.get_body_mut(handle);
+    let mut ground = world.body_mut(handle);
 
     let mut edge = b2::EdgeShape::new();
     let top_right = b2::Vec2 { x: 20., y: 20. };
@@ -60,9 +63,11 @@ fn create_ground(world: &mut b2::World) -> b2::BodyHandle {
     let bot_left = b2::Vec2 { x: -20., y: -20. };
     let bot_right = b2::Vec2 { x: 20., y: -20. };
 
-    let mut def = b2::FixtureDef::new();
-    def.density = 0.;
-    def.restitution = 0.4;
+    let mut def = b2::FixtureDef {
+        density: 0.,
+        restitution: 0.4,
+        .. b2::FixtureDef::new()
+    };
 
     let mut create_edge = |p1, p2| {
         edge.set(p1, p2);
@@ -76,17 +81,19 @@ fn create_ground(world: &mut b2::World) -> b2::BodyHandle {
     handle
 }
 
-fn create_body(world: &mut b2::World) -> b2::BodyHandle {
-    let mut def = b2::BodyDef::new();
-    def.body_type = b2::BodyType::Dynamic;
-    def.angular_damping = 2.;
-    def.linear_damping = 0.5;
-    def.position = b2::Vec2 { x: 0., y: -18. };
-    def.angle = b2::PI;
-    def.allow_sleep = false;
+fn create_body(world: &mut World) -> b2::BodyHandle {
+    let def = b2::BodyDef {
+        body_type: b2::BodyType::Dynamic,
+        angular_damping: 2.,
+        linear_damping: 0.5,
+        position: b2::Vec2 { x: 0., y: -18. },
+        angle: b2::PI,
+        allow_sleep: false,
+        .. b2::BodyDef::new()
+    };
 
     let handle = world.create_body(&def);
-    let mut body = world.get_body_mut(handle);
+    let mut body = world.body_mut(handle);
 
     let mut f_def = b2::FixtureDef::new();
 
@@ -97,8 +104,7 @@ fn create_body(world: &mut b2::World) -> b2::BodyHandle {
             transform * b2::Vec2 { x: 0., y: 0.5 }
         ];
 
-        let mut polygon = b2::PolygonShape::new();
-        polygon.set(&vertices);
+        let polygon = b2::PolygonShape::new_with(&vertices);
 
         f_def.density = density;
         body.create_fixture(&polygon, &mut f_def);
@@ -123,17 +129,20 @@ fn create_body(world: &mut b2::World) -> b2::BodyHandle {
     handle
 }
 
-fn create_cubes(world: &mut b2::World,
+fn create_cubes(world: &mut World,
                 ground: b2::BodyHandle) {
-    let mut shape = b2::PolygonShape::new();
-    shape.set_as_box(0.5, 0.5);
+    let shape = b2::PolygonShape::new_box(0.5, 0.5);
 
-    let mut f_def = b2::FixtureDef::new();
-    f_def.density = 1.;
-    f_def.friction = 0.3;
+    let mut f_def = b2::FixtureDef {
+        density: 1.,
+        friction: 0.3,
+        .. b2::FixtureDef::new()
+    };
 
-    let mut b_def = b2::BodyDef::new();
-    b_def.body_type = b2::BodyType::Dynamic;
+    let mut b_def = b2::BodyDef {
+        body_type: b2::BodyType::Dynamic,
+        .. b2::BodyDef::new()
+    };
 
     for i in 0..10 {
         b_def.position = b2::Vec2 { x: 0., y: 15. - 1.54*i as f32 };
@@ -143,7 +152,7 @@ fn create_cubes(world: &mut b2::World,
         let mass;
         let radius;
         {
-            let mut body = world.get_body_mut(handle);
+            let mut body = world.body_mut(handle);
 
             body.create_fixture(&shape, &mut f_def);
 
@@ -153,12 +162,14 @@ fn create_cubes(world: &mut b2::World,
 
         }
         let gravity = 10.;
-        let mut j_def = b2::FrictionJointDef::new(ground, handle);
-        j_def.collide_connected = true;
-        j_def.local_anchor_a = b2::Vec2 { x: 0., y: 0. };
-        j_def.local_anchor_b = b2::Vec2 { x: 0., y: 0. };
-        j_def.max_force = mass * gravity;
-        j_def.max_torque = mass * radius * gravity;
+        let j_def = b2::FrictionJointDef {
+            collide_connected: true,
+            local_anchor_a: b2::Vec2 { x: 0., y: 0. },
+            local_anchor_b: b2::Vec2 { x: 0., y: 0. },
+            max_force: mass * gravity,
+            max_torque: mass * radius * gravity,
+            .. b2::FrictionJointDef::new(ground, handle)
+        };
 
         world.create_joint(&j_def);
     }

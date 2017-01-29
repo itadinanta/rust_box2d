@@ -2,46 +2,18 @@ use std::mem;
 use wrap::*;
 use common::math::Transform;
 use collision::{Manifold, WorldManifold};
-use dynamics::world::BodyHandle;
 use dynamics::body::FixtureHandle;
-use dynamics::user_data::RawUserData;
+use dynamics::fixture::Fixture;
+use dynamics::world::BodyHandle;
+use user_data::RawUserData;
 
 #[repr(C)]
+#[doc(hidden)]
 pub struct ContactEdge {
-    other: *mut ffi::Body,
-    contact: *mut ffi::Contact,
-    prev: *mut ContactEdge,
-    next: *mut ContactEdge,
-}
-
-impl ContactEdge {
-    pub fn other(&self) -> BodyHandle {
-        unsafe { (self.other as *const ffi::Body).get_handle() }
-    }
-
-    pub fn contact_mut<'a>(&'a mut self) -> WrappedRefMut<'a, Contact> {
-        unsafe { WrappedRefMut::new(Contact::from_ffi(self.contact)) }
-    }
-
-    pub fn contact<'a>(&'a self) -> WrappedRef<'a, Contact> {
-        unsafe { WrappedRef::new(Contact::from_ffi(self.contact)) }
-    }
-
-    pub fn prev_mut<'a>(&'a mut self) -> Option<&'a mut ContactEdge> {
-        unsafe { self.prev.as_mut() }
-    }
-
-    pub fn prev<'a>(&'a self) -> Option<&'a ContactEdge> {
-        unsafe { self.prev.as_ref() }
-    }
-
-    pub fn next_mut<'a>(&'a mut self) -> Option<&'a mut ContactEdge> {
-        unsafe { self.next.as_mut() }
-    }
-
-    pub fn next<'a>(&'a self) -> Option<&'a ContactEdge> {
-        unsafe { self.next.as_ref() }
-    }
+    pub other: *mut ffi::Body,
+    pub contact: *mut ffi::Contact,
+    pub prev: *mut ContactEdge,
+    pub next: *mut ContactEdge,
 }
 
 wrap! { ffi::Contact => pub Contact }
@@ -71,16 +43,24 @@ impl Contact {
         unsafe { ffi::Contact_is_enabled(self.ptr()) }
     }
 
-    pub fn fixture_a(&self) -> FixtureHandle {
-        unsafe { ffi::Contact_get_fixture_a_const(self.ptr()).get_handle() }
+    pub fn fixture_a(&self) -> (BodyHandle, FixtureHandle) {
+        unsafe {
+            let fixture = ffi::Contact_get_fixture_a_const(self.ptr()) as *mut _;
+            let body_handle = WrappedRef::new(Fixture::from_ffi(fixture)).body();
+            (body_handle, fixture.handle())
+        }
     }
 
     pub fn child_index_a(&self) -> i32 {
         unsafe { ffi::Contact_get_child_index_a(self.ptr()) }
     }
 
-    pub fn fixture_b(&self) -> FixtureHandle {
-        unsafe { ffi::Contact_get_fixture_b_const(self.ptr()).get_handle() }
+    pub fn fixture_b(&self) -> (BodyHandle, FixtureHandle) {
+        unsafe {
+            let fixture = ffi::Contact_get_fixture_b_const(self.ptr()) as *mut _;
+            let body_handle = WrappedRef::new(Fixture::from_ffi(fixture)).body();
+            (body_handle, fixture.handle())
+        }
     }
 
     pub fn child_index_b(&self) -> i32 {
@@ -145,10 +125,10 @@ pub mod ffi {
         pub fn Contact_is_enabled(slf: *const Contact) -> bool;
         pub fn Contact_get_next(slf: *mut Contact) -> *mut Contact;
         pub fn Contact_get_next_const(slf: *const Contact) -> *const Contact;
-        // pub fn Contact_get_fixture_a(slf: *mut Contact) -> *mut Fixture;
+        pub fn Contact_get_fixture_a(slf: *mut Contact) -> *mut Fixture;
         pub fn Contact_get_fixture_a_const(slf: *const Contact) -> *const Fixture;
         pub fn Contact_get_child_index_a(slf: *const Contact) -> i32;
-        // pub fn Contact_get_fixture_b(slf: *mut Contact) -> *mut Fixture;
+        pub fn Contact_get_fixture_b(slf: *mut Contact) -> *mut Fixture;
         pub fn Contact_get_fixture_b_const(slf: *const Contact) -> *const Fixture;
         pub fn Contact_get_child_index_b(slf: *const Contact) -> i32;
         pub fn Contact_set_friction(slf: *mut Contact, friction: f32);

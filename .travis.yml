@@ -1,7 +1,15 @@
 language: rust
-
-rust:
-- nightly
+matrix:
+  include:
+  - rust: nightly
+    env: FEATURES="serialize cgmath nalgebra"
+  - rust: beta
+    env: FEATURES=""
+  - rust: stable
+    env: FEATURES=""
+  allow_failures:
+  - rust: beta
+  - rust: stable
 
 env:
   global:
@@ -15,21 +23,23 @@ addons:
 
 before_install:
 - git clone https://github.com/erincatto/Box2D
-- cd Box2D/Box2D/Build
+- cd Box2D
+- git reset --hard 7e633c4
+- cd Box2D/Build
 - cmake -DBOX2D_INSTALL=ON -DBOX2D_BUILD_SHARED=ON -DBOX2D_BUILD_EXAMPLES=OFF ..
 - make && sudo make install
 - sudo ldconfig
 - cd ../../..
 
 script:
-- cargo build --verbose
-- cargo test --verbose
+- cargo build --features "$FEATURES" --verbose
+- cargo test --features "$FEATURES" --verbose
 
 after_success:
 - |
   [ $TRAVIS_BRANCH = master ] &&
   [ $TRAVIS_PULL_REQUEST = false ] &&
-  cargo doc &&
+  cargo doc --features "serialize" --no-deps &&
   git clone https://github.com/davisp/ghp-import &&
   ./ghp-import/ghp_import.py -n target/doc &&
   git push -fq https://${GH_TOKEN}@github.com/${TRAVIS_REPO_SLUG}.git gh-pages

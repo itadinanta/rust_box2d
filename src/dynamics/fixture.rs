@@ -1,17 +1,17 @@
 use std::mem;
 use std::ptr;
 use std::ops::{Deref, DerefMut};
-use std::any::Any;
 use wrap::*;
 use common::math::Vec2;
 use collision::{AABB, RayCastInput, RayCastOutput};
 use collision::shapes::{MassData, ShapeType, UnknownShape};
 use dynamics::world::BodyHandle;
 use dynamics::body::FixtureHandle;
-use dynamics::user_data::{UserData, RawUserData, RawUserDataMut, InternalUserData};
+use user_data::{UserDataTypes, UserData, RawUserData, RawUserDataMut, InternalUserData};
 
 #[repr(C)]
-#[derive(Clone)]
+#[derive(Clone, Debug)]
+#[cfg_attr(feature = "serialize", derive(Serialize, Deserialize))]
 pub struct Filter {
     pub category_bits: u16,
     pub mask_bits: u16,
@@ -56,19 +56,22 @@ impl FixtureDef {
     }
 }
 
-pub struct MetaFixture {
+pub struct MetaFixture<U: UserDataTypes> {
     fixture: Fixture,
-    user_data: Box<InternalUserData<MetaFixture>>,
+    user_data: Box<InternalUserData<Fixture, U::FixtureData>>,
 }
 
-impl MetaFixture {
+impl<U: UserDataTypes> MetaFixture<U> {
     #[doc(hidden)]
-    pub unsafe fn new(ptr: *mut ffi::Fixture, handle: FixtureHandle) -> MetaFixture {
+    pub unsafe fn new(ptr: *mut ffi::Fixture,
+                      handle: FixtureHandle,
+                      custom: U::FixtureData)
+                      -> Self {
         let mut f = MetaFixture {
             fixture: Fixture::from_ffi(ptr),
             user_data: Box::new(InternalUserData {
                 handle: handle,
-                custom: None,
+                custom: custom,
             }),
         };
         f.mut_ptr().set_internal_user_data(&mut *f.user_data);
@@ -76,17 +79,17 @@ impl MetaFixture {
     }
 }
 
-impl UserData for MetaFixture {
-    fn get_user_data(&self) -> &Option<Box<Any>> {
+impl<U: UserDataTypes> UserData<U::FixtureData> for MetaFixture<U> {
+    fn user_data(&self) -> &U::FixtureData {
         &self.user_data.custom
     }
 
-    fn get_user_data_mut(&mut self) -> &mut Option<Box<Any>> {
+    fn user_data_mut(&mut self) -> &mut U::FixtureData {
         &mut self.user_data.custom
     }
 }
 
-impl Deref for MetaFixture {
+impl<U: UserDataTypes> Deref for MetaFixture<U> {
     type Target = Fixture;
 
     fn deref(&self) -> &Fixture {
@@ -94,7 +97,7 @@ impl Deref for MetaFixture {
     }
 }
 
-impl DerefMut for MetaFixture {
+impl<U: UserDataTypes> DerefMut for MetaFixture<U> {
     fn deref_mut(&mut self) -> &mut Fixture {
         &mut self.fixture
     }
@@ -103,6 +106,10 @@ impl DerefMut for MetaFixture {
 wrap! { ffi::Fixture => pub Fixture }
 
 impl Fixture {
+    pub fn handle(&self) -> FixtureHandle {
+        unsafe { self.ptr().handle() }
+    }
+        
     pub fn shape_type(&self) -> ShapeType {
         unsafe { ffi::Fixture_get_type(self.ptr()) }
     }
@@ -118,7 +125,7 @@ impl Fixture {
     }
 
     pub fn body(&self) -> BodyHandle {
-        unsafe { ffi::Fixture_get_body_const(self.ptr()).get_handle() }
+        unsafe { ffi::Fixture_get_body_const(self.ptr()).handle() }
     }
 
     pub fn test_point(&self, point: &Vec2) -> bool {
@@ -223,7 +230,7 @@ pub mod ffi {
         pub fn Fixture_set_filter_data(slf: *mut Fixture, filter: *const Filter);
         pub fn Fixture_get_filter_data(slf: *const Fixture) -> *const Filter;
         pub fn Fixture_refilter(slf: *mut Fixture);
-        // pub fn Fixture_get_body(slf: *mut Fixture) -> *mut Body;
+        pub fn Fixture_get_body(slf: *mut Fixture) -> *mut Body;
         pub fn Fixture_get_body_const(slf: *const Fixture) -> *const Body;
         // pub fn Fixture_get_next(slf: *mut Fixture) -> *mut Fixture;
         // pub fn Fixture_get_next_const(slf: *const Fixture) -> *const Fixture;

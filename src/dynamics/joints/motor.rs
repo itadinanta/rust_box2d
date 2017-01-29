@@ -1,5 +1,6 @@
 use wrap::*;
 use common::math::Vec2;
+use user_data::UserDataTypes;
 use dynamics::world::{World, BodyHandle};
 use dynamics::joints::{Joint, JointType, JointDef};
 
@@ -28,11 +29,14 @@ impl MotorJointDef {
         }
     }
 
-    pub fn init(&mut self, world: &World, body_a: BodyHandle, body_b: BodyHandle) {
+    pub fn init<U: UserDataTypes>(&mut self,
+                                  world: &World<U>,
+                                  body_a: BodyHandle,
+                                  body_b: BodyHandle) {
         self.body_a = body_a;
         self.body_b = body_b;
-        let a = world.get_body(body_a);
-        let b = world.get_body(body_a);
+        let a = world.body(body_a);
+        let b = world.body(body_b);
         self.linear_offset = a.local_point(b.position());
         self.angular_offset = b.angle() - a.angle();
     }
@@ -45,10 +49,10 @@ impl JointDef for MotorJointDef {
         JointType::Motor
     }
 
-    unsafe fn create(&self, world: &mut World) -> *mut ffi::Joint {
+    unsafe fn create<U: UserDataTypes>(&self, world: &mut World<U>) -> *mut ffi::Joint {
         ffi::World_create_motor_joint(world.mut_ptr(),
-                                      world.get_body_mut(self.body_a).mut_ptr(),
-                                      world.get_body_mut(self.body_b).mut_ptr(),
+                                      world.body_mut(self.body_a).mut_ptr(),
+                                      world.body_mut(self.body_b).mut_ptr(),
                                       self.collide_connected,
                                       self.linear_offset,
                                       self.angular_offset,

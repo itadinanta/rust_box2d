@@ -2,137 +2,153 @@
 pub mod callbacks;
 
 use std::mem;
+use std::ptr;
 use std::marker::PhantomData;
-use std::cell::{RefCell, Ref, RefMut};
+use std::cell::{Ref, RefMut};
 use wrap::*;
 use handle::*;
 use common::{Draw, DrawLink, DrawFlags};
 use common::math::Vec2;
 use collision::AABB;
 use dynamics::Profile;
+use user_data::UserDataTypes;
 use dynamics::body::{BodyDef, MetaBody, Body};
-use dynamics::joints::{JointDef, MetaJoint};
+use dynamics::joints::{Joint, JointDef, MetaJoint};
 use dynamics::contacts::Contact;
-use self::callbacks::{ContactFilter, ContactFilterLink, ContactListener, ContactListenerLink,
-                      QueryCallback, QueryCallbackLink, RayCastCallback, RayCastCallbackLink};
+use self::callbacks::{ContactFilter, ContactFilterLink,
+                      ContactListener, ContactListenerLink,
+                      QueryCallback, QueryCallbackLink,
+                      RayCastCallback, RayCastCallbackLink};
 
-pub type BodyHandle = TypedHandle<MetaBody>;
-pub type JointHandle = TypedHandle<MetaJoint>;
+pub type BodyHandle = TypedHandle<Body>;
+pub type JointHandle = TypedHandle<Joint>;
 
-pub struct World {
+pub struct World<U: UserDataTypes> {
     ptr: *mut ffi::World,
-    bodies: HandleMap<MetaBody>,
-    joints: HandleMap<MetaJoint>,
-    draw_link: DrawLink,
+    bodies: HandleMap<MetaBody<U>, Body>,
+    joints: HandleMap<MetaJoint<U>, Joint>,
     contact_filter_link: ContactFilterLink,
     contact_listener_link: ContactListenerLink,
-    query_callback_link: RefCell<QueryCallbackLink>,
-    raycast_callback_link: RefCell<RayCastCallbackLink>,
+    draw_link: DrawLink,
 }
 
-wrap! { ffi::World => custom World }
 
-impl World {
-    pub fn new(gravity: &Vec2) -> World {
+impl<U: UserDataTypes> Wrapped<ffi::World> for World<U> {
+    unsafe fn ptr(&self) -> *const ffi::World {
+        self.ptr as *const ffi::World
+    }
+
+    unsafe fn mut_ptr(&mut self) -> *mut ffi::World {
+        self.ptr
+    }
+}
+
+impl<U: UserDataTypes> World<U> {
+    pub fn new(gravity: &Vec2) -> Self {
         unsafe {
             World {
                 ptr: ffi::World_new(gravity),
                 bodies: HandleMap::new(),
                 joints: HandleMap::new(),
-                draw_link: DrawLink::new(),
                 contact_filter_link: ContactFilterLink::new(),
                 contact_listener_link: ContactListenerLink::new(),
-                query_callback_link: RefCell::new(QueryCallbackLink::new()),
-                raycast_callback_link: RefCell::new(RayCastCallbackLink::new()),
+                draw_link: DrawLink::new(),
             }
         }
     }
-
-    pub fn set_contact_filter(&mut self, filter: Box<ContactFilter>) {
+        
+    pub fn set_contact_filter<F: ContactFilter<U>>(&mut self, filter: Box<F>) {
         unsafe {
-            self.contact_filter_link.set_object(filter);
-            ffi::World_set_contact_filter(self.mut_ptr(), self.contact_filter_link.filter_ptr());
+            let filter_ptr = self.contact_filter_link.use_with(filter);
+            ffi::World_set_contact_filter(self.mut_ptr(), filter_ptr);
         }
     }
 
-    pub fn set_contact_listener(&mut self, listener: Box<ContactListener>) {
+    pub fn set_contact_listener<L: ContactListener<U>>(&mut self, listener: Box<L>) {
         unsafe {
-            self.contact_listener_link.set_object(listener);
-            ffi::World_set_contact_listener(self.mut_ptr(),
-                                            self.contact_listener_link.listener_ptr());
+            let listener_ptr = self.contact_listener_link.use_with(listener);
+            ffi::World_set_contact_listener(self.mut_ptr(), listener_ptr);
         }
     }
 
-    pub fn create_body(&mut self, def: &BodyDef) -> BodyHandle {
+    pub fn create_body(&mut self, def: &BodyDef) -> BodyHandle
+        where U::BodyData: Default
+    {
+        self.create_body_with(def, U::BodyData::default())
+    }
+
+    pub fn create_body_with(&mut self, def: &BodyDef, data: U::BodyData) -> BodyHandle {
         unsafe {
             let body = ffi::World_create_body(self.mut_ptr(), def);
-            self.bodies.insert_with(|h| MetaBody::new(body, h))
+            self.bodies.insert_with(|h| MetaBody::new(body, h, data))
         }
     }
 
-    pub fn get_body(&self, handle: BodyHandle) -> Ref<MetaBody> {
+    pub fn body(&self, handle: BodyHandle) -> Ref<MetaBody<U>> {
         self.bodies.get(handle).expect("invalid body handle")
     }
 
-    pub fn get_body_mut(&self, handle: BodyHandle) -> RefMut<MetaBody> {
+    pub fn body_mut(&self, handle: BodyHandle) -> RefMut<MetaBody<U>> {
         self.bodies.get_mut(handle).expect("invalid body handle")
     }
 
     pub fn destroy_body(&mut self, handle: BodyHandle) {
-        self.bodies
-            .remove(handle)
-            .map(|mut body| {
-                World::remove_body_joint_handles(&mut body, &mut self.joints);
-                unsafe {
-                    ffi::World_destroy_body(self.mut_ptr(), body.mut_ptr());
-                }
-            });
-    }
+        let mut body = self.bodies.remove(handle);
 
-    fn remove_body_joint_handles(body: &mut Body, joints: &mut HandleMap<MetaJoint>) {
-        let mut joint_edge = body.joints();
-        loop {
-            match joint_edge {
-                None => break,
-                Some(je) => {
-                    joints.remove(je.joint());
-                    joint_edge = je.next();
-                }
-            }
+        World::remove_body_joint_handles(&mut body, &mut self.joints);
+        unsafe {
+            ffi::World_destroy_body(self.mut_ptr(), body.mut_ptr());
+        }
+    }
+    
+    pub fn bodies(&self) -> HandleIter<Body, MetaBody<U>> {
+        self.bodies.iter()
+    }
+    
+    fn remove_body_joint_handles(body: &mut Body, joints: &mut HandleMap<MetaJoint<U>, Joint>) {
+        for (_, joint) in body.joints() {
+            joints.remove(joint);
         }
     }
 
-    pub fn create_joint<JD: JointDef>(&mut self, def: &JD) -> JointHandle {
+    pub fn create_joint<JD: JointDef>(&mut self, def: &JD) -> JointHandle
+        where U::JointData: Default
+    {
+        self.create_joint_with(def, U::JointData::default())
+    }
+
+    pub fn create_joint_with<JD: JointDef>(&mut self, def: &JD, data: U::JointData) -> JointHandle {
         unsafe {
             let joint = def.create(self);
-            self.joints.insert_with(|h| MetaJoint::new(joint, h))
+            self.joints.insert_with(|h| MetaJoint::new(joint, h, data))
         }
     }
 
-    pub fn get_joint(&self, handle: JointHandle) -> Ref<MetaJoint> {
+    pub fn joint(&self, handle: JointHandle) -> Ref<MetaJoint<U>> {
         self.joints.get(handle).expect("invalid joint handle")
     }
 
-    pub fn get_joint_mut(&self, handle: JointHandle) -> RefMut<MetaJoint> {
+    pub fn joint_mut(&self, handle: JointHandle) -> RefMut<MetaJoint<U>> {
         self.joints.get_mut(handle).expect("invalid joint handle")
     }
 
     pub fn destroy_joint(&mut self, handle: JointHandle) {
-        self.joints
-            .remove(handle)
-            .map(|mut meta_joint| {
-                unsafe {
-                    ffi::World_destroy_joint(self.mut_ptr(), meta_joint.mut_base_ptr());
-                }
-            });
+        let mut joint = self.joints.remove(handle);
+        unsafe {
+            ffi::World_destroy_joint(self.mut_ptr(), joint.mut_base_ptr());
+        }
     }
-
+    
+    pub fn joints(&self) -> HandleIter<Joint, MetaJoint<U>> {
+        self.joints.iter()
+    }
+        
     pub fn step(&mut self, time_step: f32, velocity_iterations: i32, position_iterations: i32) {
         unsafe {
             ffi::World_step(self.mut_ptr(),
                             time_step,
                             velocity_iterations,
-                            position_iterations)
+                            position_iterations);
         }
     }
 
@@ -140,44 +156,41 @@ impl World {
         unsafe { ffi::World_clear_forces(self.mut_ptr()) }
     }
 
-    pub fn draw_debug_data(&mut self, draw: &mut Draw, flags: DrawFlags) {
+    pub fn draw_debug_data<D: Draw>(&mut self, draw: &mut D, flags: DrawFlags) {
         unsafe {
-            let draw_ptr = self.draw_link.use_with(draw, flags);
-            ffi::World_set_debug_draw(self.mut_ptr(), draw_ptr);
+            let ptr = self.draw_link.use_with(draw, flags);
+            ffi::World_set_debug_draw(self.mut_ptr(), ptr);
+            
             ffi::World_draw_debug_data(self.mut_ptr());
+            
+            ffi::World_set_debug_draw(self.mut_ptr(), ptr::null_mut());
         }
     }
 
-    pub fn query_aabb(&self, callback: &mut QueryCallback, aabb: &AABB) {
+    pub fn query_aabb<C: QueryCallback>(&self, callback: &mut C, aabb: &AABB) {
         unsafe {
-            let ptr = self.query_callback_link.borrow_mut().use_with(callback);
+            let mut link = QueryCallbackLink::new();
+            let ptr = link.use_with(callback);
             ffi::World_query_aabb(self.ptr(), ptr, aabb);
         }
     }
 
-    pub fn ray_cast(&self, callback: &mut RayCastCallback, p1: &Vec2, p2: &Vec2) {
+    pub fn ray_cast<C: RayCastCallback>(&self, callback: &mut C, p1: &Vec2, p2: &Vec2) {
         unsafe {
-            let ptr = self.raycast_callback_link.borrow_mut().use_with(callback);
+            let mut link = RayCastCallbackLink::new();
+            let ptr = link.use_with(callback);
             ffi::World_ray_cast(self.ptr(), ptr, p1, p2);
         }
     }
 
-    pub fn bodies(&self) -> HandleIter<MetaBody> {
-        self.bodies.iter()
-    }
-
-    pub fn joints(&mut self) -> HandleIter<MetaJoint> {
-        self.joints.iter()
-    }
-
-    pub fn contact_list_mut(&mut self) -> ContactIterMut {
+    pub fn contacts_mut(&mut self) -> ContactIterMut {
         ContactIterMut {
             ptr: unsafe { ffi::World_get_contact_list(self.mut_ptr()) },
             phantom: PhantomData,
         }
     }
 
-    pub fn contact_list(&self) -> ContactIter {
+    pub fn contacts(&self) -> ContactIter {
         ContactIter {
             ptr: unsafe { ffi::World_get_contact_list_const(self.ptr()) },
             phantom: PhantomData,
@@ -279,7 +292,7 @@ impl World {
     }
 }
 
-impl Drop for World {
+impl<U: UserDataTypes> Drop for World<U> {
     fn drop(&mut self) {
         unsafe { ffi::World_drop(self.mut_ptr()) }
     }
